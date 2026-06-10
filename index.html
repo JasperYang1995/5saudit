@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5S 稽核管理系統 - 示意畫面</title>
+  <style>
+    :root {
+      --blue-900:#061b33;
+      --blue-800:#072a4c;
+      --blue-700:#0a4f9e;
+      --blue-600:#0967d2;
+      --blue-500:#1677ff;
+      --blue-100:#eaf4ff;
+      --border:#d9e2ec;
+      --text:#1f2933;
+      --muted:#6b7280;
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --red:#e03131;
+      --orange:#f08c00;
+      --green:#16a34a;
+      --purple:#7950f2;
+      --shadow:0 8px 24px rgba(15, 23, 42, .08);
+      --radius:12px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Microsoft JhengHei", "Noto Sans TC", "PingFang TC", Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 270px 1fr;
+      grid-template-rows: 64px 1fr;
+      height: 100vh;
+    }
+
+    /* Top Bar */
+    .topbar {
+      grid-column: 1 / 3;
+      display: grid;
+      grid-template-columns: 270px 1fr;
+      background: linear-gradient(90deg, #004ea2, #0a69db);
+      color: #fff;
+      box-shadow: 0 3px 12px rgba(0, 42, 90, .25);
+      z-index: 5;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 20px;
+      background: rgba(0, 0, 0, .18);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: .5px;
+    }
+
+    .grid-icon {
+      width: 22px;
+      height: 22px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+
+    .grid-icon span {
+      background: rgba(255,255,255,.9);
+      border-radius: 2px;
+    }
+
+    .top-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+    }
+
+    .cycle-select {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 520px;
+      padding: 9px 16px;
+      border: 1px solid rgba(255,255,255,.45);
+      border-radius: 8px;
+      background: rgba(0, 40, 100, .22);
+      font-weight: 700;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 20px;
+    }
+
+    .bell {
+      position: relative;
+      font-size: 24px;
+    }
+
+    .badge {
+      position: absolute;
+      top: -10px;
+      right: -12px;
+      background: #ff3b30;
+      color: #fff;
+      font-size: 12px;
+      border-radius: 999px;
+      padding: 2px 7px;
+      font-weight: 700;
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      line-height: 1.3;
+      text-align: left;
+    }
+
+    .avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #fff;
+      color: #0a4f9e;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      grid-row: 2 / 3;
+      background: linear-gradient(180deg, #061b33, #082947);
+      color: #dbeafe;
+      padding: 18px 0 24px;
+      overflow-y: auto;
+    }
+
+    .side-title {
+      color: #9fb8d4;
+      font-size: 13px;
+      padding: 0 24px 12px;
+    }
+
+    .nav-item,
+    .nav-sub {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 42px;
+      padding: 0 24px;
+      cursor: default;
+      border-left: 4px solid transparent;
+      color: #eef6ff;
+      font-weight: 600;
+    }
+
+    .nav-item .arrow {
+      margin-left: auto;
+      color: #9fb8d4;
+    }
+
+    .nav-sub {
+      padding-left: 62px;
+      height: 36px;
+      font-weight: 500;
+      color: #d9ecff;
+    }
+
+    .nav-sub.active {
+      background: #0b69d1;
+      color: #fff;
+      border-left-color: #7cc4ff;
+    }
+
+    .nav-spacer { height: 8px; }
+
+    /* Main */
+    .main {
+      grid-column: 2 / 3;
+      grid-row: 2 / 3;
+      padding: 18px 20px;
+      overflow-y: auto;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .kpi-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 16px;
+      text-align: center;
+      min-height: 126px;
+      border: 1px solid #edf2f7;
+    }
+
+    .kpi-title {
+      font-size: 15px;
+      color: #334155;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .kpi-value {
+      font-size: 42px;
+      line-height: 1;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .kpi-value small {
+      font-size: 16px;
+      margin-left: 4px;
+      color: #333;
+    }
+
+    .trend {
+      font-size: 14px;
+      color: #334155;
+    }
+
+    .trend.up-red { color: var(--red); }
+    .trend.up-green { color: var(--green); }
+    .trend.down-blue { color: var(--blue-600); }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(720px, 1.65fr) minmax(430px, .95fr);
+      gap: 16px;
+    }
+
+    .panel {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid #edf2f7;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px 10px;
+    }
+
+    .panel-title {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 7px;
+      padding: 9px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: default;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: linear-gradient(180deg, #0b74df, #0059bd);
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 91, 189, .22);
+    }
+
+    .btn-light {
+      background: #f2f5f8;
+      color: #475569;
+      border: 1px solid #dbe4ee;
+    }
+
+    .btn-warning {
+      background: #f59f00;
+      color: #fff;
+    }
+
+    .btn-ghost {
+      background: #eaf4ff;
+      color: #0967d2;
+      border: 1px solid #c7def8;
+      padding: 6px 12px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 30px;
+      padding: 0 20px;
+      border-bottom: 1px solid var(--border);
+      height: 42px;
+      align-items: end;
+    }
+
+    .tab {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: #111827;
+      border-bottom: 3px solid transparent;
+    }
+
+    .tab.active {
+      color: var(--blue-600);
+      border-bottom-color: var(--blue-600);
+      font-weight: 800;
+    }
+
+    .filters {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px 12px;
+    }
+
+    select, .input-like {
+      height: 36px;
+      border-radius: 6px;
+      border: 1px solid #cfd8e3;
+      background: #fff;
+      color: #475569;
+      padding: 0 12px;
+      font-family: inherit;
+      min-width: 150px;
+    }
+
+    table {
+      width: calc(100% - 32px);
+      margin: 0 16px 14px;
+      border-collapse: collapse;
+      font-size: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    thead {
+      background: #f7fafc;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 11px 10px;
+      border-bottom: 1px solid #e5edf5;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    th {
+      color: #334155;
+      font-weight: 800;
+    }
+
+    tbody tr:hover {
+      background: #f8fbff;
+    }
+
+    .check {
+      width: 15px;
+      height: 15px;
+      border: 1px solid #aab7c4;
+      border-radius: 3px;
+      display: inline-block;
+      background: #fff;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .tag-red { background: #ffe3e3; color: #d90429; border: 1px solid #ffc9c9; }
+    .tag-blue { background: #d8ebff; color: #0b63ce; border: 1px solid #bddcff; }
+    .tag-green { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .tag-orange { background: #fff1d6; color: #d97706; border: 1px solid #ffdaa2; }
+    .tag-purple { background: #eee5ff; color: #6741d9; border: 1px solid #d7c7ff; }
+    .tag-gray { background: #eef2f6; color: #475569; border: 1px solid #d8dee7; }
+
+    .score-minus { color: var(--red); font-weight: 800; }
+
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px 18px;
+      color: #475569;
+      font-size: 14px;
+    }
+
+    .pages {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .page {
+      min-width: 32px;
+      height: 32px;
+      border: 1px solid #dbe4ee;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      background: #fff;
+    }
+
+    .page.active {
+      background: var(--blue-600);
+      color: #fff;
+      border-color: var(--blue-600);
+    }
+
+    .right-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .detail {
+      padding-bottom: 16px;
+    }
+
+    .detail-header {
+      padding: 18px 20px 8px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .case-id {
+      color: #e03131;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: .5px;
+      margin-bottom: 12px;
+    }
+
+    .detail-grid {
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      row-gap: 10px;
+      column-gap: 6px;
+      font-size: 14px;
+    }
+
+    .label { color: #334155; font-weight: 800; }
+    .value { color: #111827; }
+
+    .thumbs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 12px 20px 6px;
+    }
+
+    .thumb {
+      height: 80px;
+      border-radius: 6px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.35), rgba(0,0,0,.05)),
+        repeating-linear-gradient(45deg, #e7edf4 0, #e7edf4 10px, #d6dee8 10px, #d6dee8 20px);
+      border: 1px solid #d6dee8;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .thumb::before {
+      content: "";
+      position: absolute;
+      width: 34px;
+      height: 46px;
+      background: #d90429;
+      border-radius: 6px 6px 3px 3px;
+      left: 38%;
+      top: 12px;
+      box-shadow: inset 0 8px #f8f9fa;
+    }
+
+    .thumb::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 8px;
+      height: 8px;
+      background: repeating-linear-gradient(90deg, #111 0 14px, #ffd43b 14px 28px);
+      transform: rotate(-3deg);
+    }
+
+    .thumb:last-child .more {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.28);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      font-weight: 800;
+      z-index: 2;
+    }
+
+    .progress {
+      padding: 8px 20px 10px;
+    }
+
+    .progress-line {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      align-items: center;
+      margin: 8px 0 8px;
+      position: relative;
+    }
+
+    .progress-line::before {
+      content: "";
+      position: absolute;
+      top: 15px;
+      left: 9%;
+      right: 9%;
+      height: 3px;
+      background: #cbd5e1;
+    }
+
+    .step {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      font-size: 12px;
+      color: #475569;
+    }
+
+    .dot {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #94a3b8;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 7px;
+      color: #64748b;
+      font-weight: 800;
+    }
+
+    .step.active .dot {
+      background: var(--blue-600);
+      color: #fff;
+      border-color: var(--blue-600);
+    }
+
+    .detail-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 10px;
+      padding: 10px 20px 0;
+    }
+
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .info-card {
+      padding: 14px 16px 18px;
+    }
+
+    .cycle-boxes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .cycle-box {
+      padding: 16px;
+      border-radius: 9px;
+      border: 1px solid #cbd5e1;
+      background: #f8fbff;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .cycle-box.blue { background:#eef7ff; color:#0b63ce; border-color:#b7d7ff; }
+    .cycle-box.green { background:#f1fff5; color:#15803d; border-color:#bcf0cf; }
+
+    .track-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 0 16px 16px;
+    }
+
+    .track-card {
+      border-radius: 9px;
+      padding: 15px 10px;
+      text-align: center;
+      font-weight: 800;
+      border: 1px solid transparent;
+    }
+
+    .track-card .num {
+      font-size: 28px;
+      margin-top: 8px;
+    }
+
+    .track-blue { background:#e8f3ff; color:#0b63ce; border-color:#c5e0ff; }
+    .track-green { background:#eafaf0; color:#15803d; border-color:#c2f0d0; }
+    .track-red { background:#ffe8e8; color:#d90429; border-color:#ffc9c9; }
+    .track-orange { background:#fff4df; color:#f08c00; border-color:#ffdda7; }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      padding: 6px 18px 18px;
+    }
+
+    .quick {
+      text-align: center;
+      font-size: 14px;
+      color: #334155;
+      font-weight: 800;
+    }
+
+    .quick-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 8px;
+      font-size: 24px;
+      border: 1px solid #d6dee8;
+    }
+
+    .qi-red { background:#fff0f0; color:#d90429; }
+    .qi-green { background:#ecfff3; color:#16a34a; }
+    .qi-blue { background:#eef7ff; color:#0967d2; }
+    .qi-purple { background:#f3edff; color:#7950f2; }
+
+    .small-muted {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 1280px) {
+      body { overflow: auto; }
+      .app {
+        min-width: 1280px;
+        height: auto;
+        min-height: 100vh;
+      }
+      .main { overflow: visible; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="grid-icon" aria-hidden="true">
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </div>
+        <span>5S 稽核管理系統</span>
+      </div>
+
+      <div class="top-content">
+        <div class="cycle-select">☰　當前稽核週：2025-W23（05/26 08:00 ~ 05/30 17:00）　⌄</div>
+        <div class="top-actions">
+          <div class="bell">🔔<span class="badge">12</span></div>
+          <div>？</div>
+          <div class="user">
+            <div class="avatar">王</div>
+            <div><strong>王小明</strong><br />稽核人員</div>
+            <div>⌄</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+      <div class="side-title">主選單</div>
+
+      <div class="nav-item">⌂　首頁儀表板</div>
+
+      <div class="nav-item">▣　稽核作業 <span class="arrow">⌃</span></div>
+      <div class="nav-sub active">稽核清單</div>
+      <div class="nav-sub">新增扣分單</div>
+      <div class="nav-sub">我的稽核紀錄</div>
+
+      <div class="nav-spacer"></div>
+      <div class="nav-item">✩　加分提報 <span class="arrow">⌃</span></div>
+      <div class="nav-sub">新增加分單</div>
+      <div class="nav-sub">我的加分紀錄</div>
+
+      <div class="nav-spacer"></div>
+      <div class="nav-item">▤　改善管理 <span class="arrow">⌃</span></div>
+      <div class="nav-sub">待改善清單</div>
+      <div class="nav-sub">我提出的改善</div>
+      <div class="nav-sub">逾期案件</div>
+
+      <div class="nav-spacer"></div>
+      <div class="nav-item">⟳　前期追蹤 <span class="arrow">⌃</span></div>
+      <div class="nav-sub">追蹤專案清單</div>
+      <div class="nav-sub">追蹤統計</div>
+
+      <div class="nav-spacer"></div>
+      <div class="nav-item">▥　統計報表 <span class="arrow">⌃</span></div>
+      <div class="nav-sub">部門排名</div>
+      <div class="nav-sub">缺失統計</div>
+      <div class="nav-sub">加分統計</div>
+      <div class="nav-sub">趨勢分析</div>
+
+      <div class="nav-spacer"></div>
+      <div class="nav-item">▦　主檔資料 <span class="arrow">⌄</span></div>
+      <div class="nav-item">⚙　系統管理 <span class="arrow">⌄</span></div>
+    </aside>
+
+    <main class="main">
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-title">本週缺失總數</div>
+          <div class="kpi-value" style="color:var(--red)">28 <small>件</small></div>
+          <div class="trend up-red">較上週 ▲ 12%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">逾期未改善</div>
+          <div class="kpi-value" style="color:var(--orange)">6 <small>件</small></div>
+          <div class="trend up-red">較上週 ▲ 20%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">本週加分案件</div>
+          <div class="kpi-value" style="color:var(--green)">18 <small>件</small></div>
+          <div class="trend up-green">較上週 ▲ 38%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">本週部門總分</div>
+          <div class="kpi-value" style="color:var(--blue-600)">-35 <small>分</small></div>
+          <div class="trend down-blue">較上週 ▼ 8分</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">改善完成率</div>
+          <div class="kpi-value" style="color:var(--blue-600)">82 <small>%</small></div>
+          <div class="trend up-green">較上週 ▲ 5%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">季度追蹤未完成</div>
+          <div class="kpi-value" style="color:var(--purple)">4 <small>件</small></div>
+          <div class="trend up-red">較上季 ▲ 1件</div>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <div>
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">稽核清單</div>
+              <button class="btn btn-primary">＋ 新增扣分單</button>
+            </div>
+
+            <div class="tabs">
+              <div class="tab active">全部</div>
+              <div class="tab">待改善 (8)</div>
+              <div class="tab">改善中 (10)</div>
+              <div class="tab">待複驗 (3)</div>
+              <div class="tab">待完成 (2)</div>
+              <div class="tab">已結案 (47)</div>
+            </div>
+
+            <div class="filters">
+              <select><option>全部狀態</option></select>
+              <select><option>全部部門</option></select>
+              <select><option>2025-W23</option></select>
+              <button class="btn btn-primary">查詢</button>
+              <button class="btn btn-light">重設</button>
+            </div>
+
+            <table>
+              <thead>
+                <tr>
+                  <th><span class="check"></span></th>
+                  <th>編號</th>
+                  <th>開單時間</th>
+                  <th>稽核區域</th>
+                  <th>部門</th>
+                  <th>缺失項目</th>
+                  <th>狀態</th>
+                  <th>改善期限</th>
+                  <th>扣分</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="check"></span></td>
+                  <td>CL-2025-23001</td>
+                  <td>05/26 09:15</td>
+                  <td>二廠1F-組裝區</td>
+                  <td>組裝課</td>
+                  <td><span class="tag tag-red">安全</span></td>
+                  <td><span class="tag tag-orange">待改善</span></td>
+                  <td>06/06 17:00</td>
+                  <td class="score-minus">-5</td>
+                  <td><button class="btn btn-ghost">檢視</button></td>
+                </tr>
+                <tr>
+                  <td><span class="check"></span></td>
+                  <td>CL-2025-23002</td>
+                  <td>05/26 10:02</td>
+                  <td>二廠1F-包裝區</td>
+                  <td>包裝課</td>
+                  <td><span class="tag tag-gray">整理</span></td>
+                  <td><span class="tag tag-blue">改善中</span></td>
+                  <td>06/06 17:00</td>
+                  <td class="score-minus">-3</td>
+                  <td><button class="btn btn-ghost">檢視</button></td>
+                </tr>
+                <tr>
+                  <td><span class="check"></span></td>
+                  <td>CL-2025-23003</td>
+                  <td>05/26 11:05</td>
+                  <td>一廠2F-倉庫</td>
+                  <td>倉儲課</td>
+                  <td><span class="tag tag-gray">整頓</span></td>
+                  <td><span class="tag tag-purple">待複驗</span></td>
+                  <td>06/06 17:00</td>
+                  <td class="score-minus">-3</td>
+                  <td><button class="btn btn-ghost">檢視</button></td>
+                </tr>
+                <tr>
+                  <td><span class="check"></span></td>
+                  <td>CL-2025-23004</td>
+                  <td>05/27 08:50</td>
+                  <td>二廠2F-研發區</td>
+                  <td>研發課</td>
+                  <td><span class="tag tag-gray">清潔</span></td>
+                  <td><span class="tag tag-green">待完成</span></td>
+                  <td>06/06 17:00</td>
+                  <td class="score-minus">-3</td>
+                  <td><button class="btn btn-ghost">檢視</button></td>
+                </tr>
+                <tr>
+                  <td><span class="check"></span></td>
+                  <td>CL-2025-23005</td>
+                  <td>05/27 09:30</td>
+                  <td>二廠1F-辦公區</td>
+                  <td>管理部</td>
+                  <td><span class="tag tag-orange">教養</span></td>
+                  <td><span class="tag tag-red">逾期未改</span></td>
+                  <td>06/06 17:00</td>
+                  <td class="score-minus">-4</td>
+                  <td><button class="btn btn-ghost">檢視</button></td>
+                </tr>
+                <tr>
+                  <td><span class="check"></span></td>
+                  <td>CL-2025-23006</td>
+                  <td>05/27 10:10</td>
+                  <td>一廠1F-設備區</td>
+                  <td>生產課</td>
+                  <td><span class="tag tag-blue">清掃</span></td>
+                  <td><span class="tag tag-red">退件重改</span></td>
+                  <td>06/13 17:00</td>
+                  <td class="score-minus">-3</td>
+                  <td><button class="btn btn-ghost">檢視</button></td>
+                </tr>
+                <tr>
+                  <td><span class="check"></span></td>
+                  <td>CL-2025-23007</td>
+                  <td>05/28 14:20</td>
+                  <td>二廠3F-實驗室</td>
+                  <td>品管課</td>
+                  <td><span class="tag tag-red">安全</span></td>
+                  <td><span class="tag tag-blue">申訴中</span></td>
+                  <td>06/06 17:00</td>
+                  <td class="score-minus">-5</td>
+                  <td><button class="btn btn-ghost">檢視</button></td>
+                </tr>
+                <tr>
+                  <td><span class="check"></span></td>
+                  <td>CL-2025-23008</td>
+                  <td>05/28 15:40</td>
+                  <td>二廠1F-宿舍區</td>
+                  <td>管理部</td>
+                  <td><span class="tag tag-gray">教養</span></td>
+                  <td><span class="tag tag-gray">已結案</span></td>
+                  <td>05/30 12:00</td>
+                  <td class="score-minus">-4</td>
+                  <td><button class="btn btn-ghost">檢視</button></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="pagination">
+              <div>共 28 筆</div>
+              <div class="pages">
+                <span>‹</span>
+                <span class="page active">1</span>
+                <span class="page">2</span>
+                <span class="page">3</span>
+                <span>›</span>
+              </div>
+              <div>
+                <select style="min-width:100px;"><option>每頁 10</option></select>　筆
+              </div>
+            </div>
+          </div>
+
+          <div class="bottom-grid">
+            <div class="panel info-card">
+              <div class="panel-title">稽核週期說明</div>
+              <div class="cycle-boxes">
+                <div class="cycle-box blue">
+                  開單週（第1週）<br />
+                  <span class="small-muted">週一 08:00 ~ 週五 17:00<br />可開立扣分單</span>
+                </div>
+                <div class="cycle-box green">
+                  改善週（第1週～第2週五）<br />
+                  <span class="small-muted">週一 08:00 ~ 週五 17:00<br />責任單位改善並上傳佐證</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <div class="panel-title">前期追蹤概況</div>
+                  <div class="small-muted">本季：2025 Q2（4–6月）</div>
+                </div>
+                <button class="btn btn-ghost">前往追蹤清單</button>
+              </div>
+              <div class="track-cards">
+                <div class="track-card track-blue">追蹤中<div class="num">12 件</div></div>
+                <div class="track-card track-green">已完成<div class="num">8 件</div></div>
+                <div class="track-card track-red">逾期未完成<div class="num">4 件</div></div>
+                <div class="track-card track-orange">即將到期<div class="num">2 件</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-stack">
+          <div class="panel detail">
+            <div class="detail-header">
+              <div>
+                <div class="panel-title">缺失單明細</div>
+                <div class="case-id">CL-2025-23001 <span class="tag tag-orange" style="font-size:13px;vertical-align:middle;">待改善</span></div>
+              </div>
+              <div style="font-size:24px;color:#64748b;">×</div>
+            </div>
+
+            <div class="detail-grid">
+              <div class="label">開單時間：</div><div class="value">2025/05/26 09:15</div>
+              <div class="label">稽核人員：</div><div class="value">王小明、李小華</div>
+              <div class="label">稽核區域：</div><div class="value">二廠 1F - 組裝區</div>
+              <div class="label">責任部門：</div><div class="value">組裝課</div>
+              <div class="label">缺失項目：</div><div class="value"><span class="tag tag-red">安全</span></div>
+              <div class="label">扣分：</div><div class="value">-5 分</div>
+              <div class="label">改善期限：</div><div class="value">2025/06/06 17:00（第1週一～第2週五）</div>
+              <div class="label">描述：</div><div class="value">滅火器前方放置物品，影響緊急取用。</div>
+            </div>
+
+            <div style="padding:12px 20px 0;font-weight:800;">缺失照片：</div>
+            <div class="thumbs">
+              <div class="thumb"></div>
+              <div class="thumb"></div>
+              <div class="thumb"><span class="more">+2</span></div>
+            </div>
+
+            <div class="progress">
+              <div style="font-weight:800;">改善進度：</div>
+              <div class="progress-line">
+                <div class="step active"><div class="dot">1</div>開單成立</div>
+                <div class="step"><div class="dot">2</div>改善中</div>
+                <div class="step"><div class="dot">3</div>待複驗</div>
+                <div class="step"><div class="dot">4</div>待完成</div>
+                <div class="step"><div class="dot">5</div>結案</div>
+              </div>
+            </div>
+
+            <div class="detail-grid">
+              <div class="label">改善說明：</div><div class="value">尚未填寫</div>
+              <div class="label">改善照片：</div><div class="value">尚未上傳</div>
+              <div class="label">申訴狀態：</div><div class="value">無</div>
+              <div class="label">追蹤狀態：</div><div class="value">否</div>
+            </div>
+
+            <div class="detail-actions">
+              <button class="btn btn-primary">編輯</button>
+              <button class="btn btn-warning">退件</button>
+              <button class="btn btn-primary">申訴處理</button>
+              <button class="btn btn-light">更多⌄</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">快速操作</div>
+            </div>
+            <div class="quick-actions">
+              <div class="quick">
+                <div class="quick-icon qi-red">▣</div>
+                新增扣分單
+              </div>
+              <div class="quick">
+                <div class="quick-icon qi-green">☆</div>
+                新增加分單
+              </div>
+              <div class="quick">
+                <div class="quick-icon qi-blue">🔗</div>
+                前期追蹤
+              </div>
+              <div class="quick">
+                <div class="quick-icon qi-purple">▤</div>
+                報表中心
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
