@@ -3,1050 +3,753 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>5S 稽核管理系統 - 示意畫面</title>
+  <title>5S 稽核管理系統｜互動驗證版</title>
   <style>
-    :root {
-      --blue-900:#061b33;
-      --blue-800:#072a4c;
-      --blue-700:#0a4f9e;
-      --blue-600:#0967d2;
-      --blue-500:#1677ff;
-      --blue-100:#eaf4ff;
-      --border:#d9e2ec;
-      --text:#1f2933;
-      --muted:#6b7280;
-      --bg:#f4f7fb;
-      --card:#ffffff;
-      --red:#e03131;
-      --orange:#f08c00;
-      --green:#16a34a;
-      --purple:#7950f2;
-      --shadow:0 8px 24px rgba(15, 23, 42, .08);
-      --radius:12px;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: "Microsoft JhengHei", "Noto Sans TC", "PingFang TC", Arial, sans-serif;
-      color: var(--text);
-      background: var(--bg);
-      overflow: hidden;
-    }
-
-    .app {
-      display: grid;
-      grid-template-columns: 270px 1fr;
-      grid-template-rows: 64px 1fr;
-      height: 100vh;
-    }
-
-    /* Top Bar */
-    .topbar {
-      grid-column: 1 / 3;
-      display: grid;
-      grid-template-columns: 270px 1fr;
-      background: linear-gradient(90deg, #004ea2, #0a69db);
-      color: #fff;
-      box-shadow: 0 3px 12px rgba(0, 42, 90, .25);
-      z-index: 5;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 0 20px;
-      background: rgba(0, 0, 0, .18);
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: .5px;
-    }
-
-    .grid-icon {
-      width: 22px;
-      height: 22px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 4px;
-    }
-
-    .grid-icon span {
-      background: rgba(255,255,255,.9);
-      border-radius: 2px;
-    }
-
-    .top-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 22px;
-    }
-
-    .cycle-select {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 520px;
-      padding: 9px 16px;
-      border: 1px solid rgba(255,255,255,.45);
-      border-radius: 8px;
-      background: rgba(0, 40, 100, .22);
-      font-weight: 700;
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      font-size: 20px;
-    }
-
-    .bell {
-      position: relative;
-      font-size: 24px;
-    }
-
-    .badge {
-      position: absolute;
-      top: -10px;
-      right: -12px;
-      background: #ff3b30;
-      color: #fff;
-      font-size: 12px;
-      border-radius: 999px;
-      padding: 2px 7px;
-      font-weight: 700;
-    }
-
-    .user {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14px;
-      line-height: 1.3;
-      text-align: left;
-    }
-
-    .avatar {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: #fff;
-      color: #0a4f9e;
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      grid-row: 2 / 3;
-      background: linear-gradient(180deg, #061b33, #082947);
-      color: #dbeafe;
-      padding: 18px 0 24px;
-      overflow-y: auto;
-    }
-
-    .side-title {
-      color: #9fb8d4;
-      font-size: 13px;
-      padding: 0 24px 12px;
-    }
-
-    .nav-item,
-    .nav-sub {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      height: 42px;
-      padding: 0 24px;
-      cursor: default;
-      border-left: 4px solid transparent;
-      color: #eef6ff;
-      font-weight: 600;
-    }
-
-    .nav-item .arrow {
-      margin-left: auto;
-      color: #9fb8d4;
-    }
-
-    .nav-sub {
-      padding-left: 62px;
-      height: 36px;
-      font-weight: 500;
-      color: #d9ecff;
-    }
-
-    .nav-sub.active {
-      background: #0b69d1;
-      color: #fff;
-      border-left-color: #7cc4ff;
-    }
-
-    .nav-spacer { height: 8px; }
-
-    /* Main */
-    .main {
-      grid-column: 2 / 3;
-      grid-row: 2 / 3;
-      padding: 18px 20px;
-      overflow-y: auto;
-    }
-
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 14px;
-      margin-bottom: 16px;
-    }
-
-    .kpi-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 20px 16px;
-      text-align: center;
-      min-height: 126px;
-      border: 1px solid #edf2f7;
-    }
-
-    .kpi-title {
-      font-size: 15px;
-      color: #334155;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-
-    .kpi-value {
-      font-size: 42px;
-      line-height: 1;
-      margin-bottom: 10px;
-      font-weight: 500;
-    }
-
-    .kpi-value small {
-      font-size: 16px;
-      margin-left: 4px;
-      color: #333;
-    }
-
-    .trend {
-      font-size: 14px;
-      color: #334155;
-    }
-
-    .trend.up-red { color: var(--red); }
-    .trend.up-green { color: var(--green); }
-    .trend.down-blue { color: var(--blue-600); }
-
-    .content-grid {
-      display: grid;
-      grid-template-columns: minmax(720px, 1.65fr) minmax(430px, .95fr);
-      gap: 16px;
-    }
-
-    .panel {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      border: 1px solid #edf2f7;
-      overflow: hidden;
-    }
-
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 20px 10px;
-    }
-
-    .panel-title {
-      font-size: 18px;
-      font-weight: 800;
-    }
-
-    .btn {
-      border: 0;
-      border-radius: 7px;
-      padding: 9px 16px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: default;
-      font-family: inherit;
-    }
-
-    .btn-primary {
-      background: linear-gradient(180deg, #0b74df, #0059bd);
-      color: #fff;
-      box-shadow: 0 4px 10px rgba(0, 91, 189, .22);
-    }
-
-    .btn-light {
-      background: #f2f5f8;
-      color: #475569;
-      border: 1px solid #dbe4ee;
-    }
-
-    .btn-warning {
-      background: #f59f00;
-      color: #fff;
-    }
-
-    .btn-ghost {
-      background: #eaf4ff;
-      color: #0967d2;
-      border: 1px solid #c7def8;
-      padding: 6px 12px;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 30px;
-      padding: 0 20px;
-      border-bottom: 1px solid var(--border);
-      height: 42px;
-      align-items: end;
-    }
-
-    .tab {
-      height: 42px;
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-      color: #111827;
-      border-bottom: 3px solid transparent;
-    }
-
-    .tab.active {
-      color: var(--blue-600);
-      border-bottom-color: var(--blue-600);
-      font-weight: 800;
-    }
-
-    .filters {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 20px 12px;
-    }
-
-    select, .input-like {
-      height: 36px;
-      border-radius: 6px;
-      border: 1px solid #cfd8e3;
-      background: #fff;
-      color: #475569;
-      padding: 0 12px;
-      font-family: inherit;
-      min-width: 150px;
-    }
-
-    table {
-      width: calc(100% - 32px);
-      margin: 0 16px 14px;
-      border-collapse: collapse;
-      font-size: 14px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    thead {
-      background: #f7fafc;
-    }
-
-    th, td {
-      text-align: left;
-      padding: 11px 10px;
-      border-bottom: 1px solid #e5edf5;
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    th {
-      color: #334155;
-      font-weight: 800;
-    }
-
-    tbody tr:hover {
-      background: #f8fbff;
-    }
-
-    .check {
-      width: 15px;
-      height: 15px;
-      border: 1px solid #aab7c4;
-      border-radius: 3px;
-      display: inline-block;
-      background: #fff;
-    }
-
-    .tag {
-      display: inline-block;
-      padding: 4px 9px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .tag-red { background: #ffe3e3; color: #d90429; border: 1px solid #ffc9c9; }
-    .tag-blue { background: #d8ebff; color: #0b63ce; border: 1px solid #bddcff; }
-    .tag-green { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
-    .tag-orange { background: #fff1d6; color: #d97706; border: 1px solid #ffdaa2; }
-    .tag-purple { background: #eee5ff; color: #6741d9; border: 1px solid #d7c7ff; }
-    .tag-gray { background: #eef2f6; color: #475569; border: 1px solid #d8dee7; }
-
-    .score-minus { color: var(--red); font-weight: 800; }
-
-    .pagination {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px 18px;
-      color: #475569;
-      font-size: 14px;
-    }
-
-    .pages {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .page {
-      min-width: 32px;
-      height: 32px;
-      border: 1px solid #dbe4ee;
-      border-radius: 7px;
-      display: grid;
-      place-items: center;
-      background: #fff;
-    }
-
-    .page.active {
-      background: var(--blue-600);
-      color: #fff;
-      border-color: var(--blue-600);
-    }
-
-    .right-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .detail {
-      padding-bottom: 16px;
-    }
-
-    .detail-header {
-      padding: 18px 20px 8px;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-    }
-
-    .case-id {
-      color: #e03131;
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing: .5px;
-      margin-bottom: 12px;
-    }
-
-    .detail-grid {
-      padding: 0 20px;
-      display: grid;
-      grid-template-columns: 86px 1fr;
-      row-gap: 10px;
-      column-gap: 6px;
-      font-size: 14px;
-    }
-
-    .label { color: #334155; font-weight: 800; }
-    .value { color: #111827; }
-
-    .thumbs {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      padding: 12px 20px 6px;
-    }
-
-    .thumb {
-      height: 80px;
-      border-radius: 6px;
-      background:
-        linear-gradient(135deg, rgba(255,255,255,.35), rgba(0,0,0,.05)),
-        repeating-linear-gradient(45deg, #e7edf4 0, #e7edf4 10px, #d6dee8 10px, #d6dee8 20px);
-      border: 1px solid #d6dee8;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .thumb::before {
-      content: "";
-      position: absolute;
-      width: 34px;
-      height: 46px;
-      background: #d90429;
-      border-radius: 6px 6px 3px 3px;
-      left: 38%;
-      top: 12px;
-      box-shadow: inset 0 8px #f8f9fa;
-    }
-
-    .thumb::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 8px;
-      height: 8px;
-      background: repeating-linear-gradient(90deg, #111 0 14px, #ffd43b 14px 28px);
-      transform: rotate(-3deg);
-    }
-
-    .thumb:last-child .more {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,.28);
-      color: #fff;
-      display: grid;
-      place-items: center;
-      font-size: 24px;
-      font-weight: 800;
-      z-index: 2;
-    }
-
-    .progress {
-      padding: 8px 20px 10px;
-    }
-
-    .progress-line {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      align-items: center;
-      margin: 8px 0 8px;
-      position: relative;
-    }
-
-    .progress-line::before {
-      content: "";
-      position: absolute;
-      top: 15px;
-      left: 9%;
-      right: 9%;
-      height: 3px;
-      background: #cbd5e1;
-    }
-
-    .step {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      font-size: 12px;
-      color: #475569;
-    }
-
-    .dot {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: #fff;
-      border: 2px solid #94a3b8;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 7px;
-      color: #64748b;
-      font-weight: 800;
-    }
-
-    .step.active .dot {
-      background: var(--blue-600);
-      color: #fff;
-      border-color: var(--blue-600);
-    }
-
-    .detail-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr auto;
-      gap: 10px;
-      padding: 10px 20px 0;
-    }
-
-    .bottom-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.25fr;
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    .info-card {
-      padding: 14px 16px 18px;
-    }
-
-    .cycle-boxes {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .cycle-box {
-      padding: 16px;
-      border-radius: 9px;
-      border: 1px solid #cbd5e1;
-      background: #f8fbff;
-      text-align: center;
-      font-weight: 800;
-    }
-
-    .cycle-box.blue { background:#eef7ff; color:#0b63ce; border-color:#b7d7ff; }
-    .cycle-box.green { background:#f1fff5; color:#15803d; border-color:#bcf0cf; }
-
-    .track-cards {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      padding: 0 16px 16px;
-    }
-
-    .track-card {
-      border-radius: 9px;
-      padding: 15px 10px;
-      text-align: center;
-      font-weight: 800;
-      border: 1px solid transparent;
-    }
-
-    .track-card .num {
-      font-size: 28px;
-      margin-top: 8px;
-    }
-
-    .track-blue { background:#e8f3ff; color:#0b63ce; border-color:#c5e0ff; }
-    .track-green { background:#eafaf0; color:#15803d; border-color:#c2f0d0; }
-    .track-red { background:#ffe8e8; color:#d90429; border-color:#ffc9c9; }
-    .track-orange { background:#fff4df; color:#f08c00; border-color:#ffdda7; }
-
-    .quick-actions {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      padding: 6px 18px 18px;
-    }
-
-    .quick {
-      text-align: center;
-      font-size: 14px;
-      color: #334155;
-      font-weight: 800;
-    }
-
-    .quick-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 8px;
-      font-size: 24px;
-      border: 1px solid #d6dee8;
-    }
-
-    .qi-red { background:#fff0f0; color:#d90429; }
-    .qi-green { background:#ecfff3; color:#16a34a; }
-    .qi-blue { background:#eef7ff; color:#0967d2; }
-    .qi-purple { background:#f3edff; color:#7950f2; }
-
-    .small-muted {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    @media (max-width: 1280px) {
-      body { overflow: auto; }
-      .app {
-        min-width: 1280px;
-        height: auto;
-        min-height: 100vh;
-      }
-      .main { overflow: visible; }
-    }
+    :root{
+      --bg:#f4f7fb; --card:#fff; --text:#1f2937; --muted:#64748b; --border:#d9e2ec;
+      --blue:#0967d2; --blue2:#0759b8; --blue3:#eaf4ff; --nav:#071f3a;
+      --red:#e03131; --orange:#f08c00; --green:#16a34a; --purple:#7048e8; --gray:#94a3b8;
+      --shadow:0 10px 28px rgba(15,23,42,.08); --radius:14px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Microsoft JhengHei","Noto Sans TC","PingFang TC",Arial,sans-serif;background:var(--bg);color:var(--text)}
+    button,select,input,textarea{font-family:inherit}
+    .app{display:grid;grid-template-columns:268px 1fr;grid-template-rows:64px 1fr;min-height:100vh}
+    .topbar{grid-column:1/3;background:linear-gradient(90deg,#004ea2,#0871df);color:#fff;display:grid;grid-template-columns:268px 1fr;box-shadow:0 3px 14px rgba(2,48,94,.25);position:sticky;top:0;z-index:50}
+    .brand{display:flex;align-items:center;gap:14px;padding:0 20px;background:rgba(0,0,0,.18);font-weight:800;font-size:21px;letter-spacing:.4px}
+    .gridIcon{width:22px;height:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+    .gridIcon span{background:#fff;border-radius:2px;opacity:.92}
+    .topMain{display:flex;align-items:center;justify-content:space-between;padding:0 18px;gap:16px}
+    .cycleBox{display:flex;align-items:center;gap:10px;padding:8px 14px;border:1px solid rgba(255,255,255,.45);border-radius:9px;background:rgba(0,42,110,.2);font-weight:800;min-width:520px}
+    .topTools{display:flex;align-items:center;gap:12px}
+    .roleSelect,.timeInput{height:36px;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:#fff;border-radius:8px;padding:0 10px;font-weight:700}
+    .roleSelect option{color:#111;background:#fff}
+    .userBox{display:flex;align-items:center;gap:10px}
+    .avatar{width:38px;height:38px;border-radius:50%;background:#fff;color:#0967d2;display:grid;place-items:center;font-weight:900}
+    .sidebar{grid-row:2/3;background:linear-gradient(180deg,#061b33,#082947);color:#dbeafe;padding:18px 0;position:sticky;top:64px;height:calc(100vh - 64px);overflow:auto}
+    .sideTitle{color:#9fb8d4;font-size:13px;padding:0 22px 12px}
+    .navGroup{margin-bottom:8px}
+    .navBtn{width:100%;height:43px;display:flex;align-items:center;gap:10px;padding:0 22px;border:0;background:transparent;color:#eef6ff;text-align:left;font-size:15px;font-weight:800;cursor:pointer;border-left:4px solid transparent}
+    .navBtn:hover{background:rgba(255,255,255,.07)}
+    .navBtn.active{background:#0b69d1;border-left-color:#7cc4ff;color:#fff}
+    .navSub{height:36px;padding-left:58px;font-size:14px;font-weight:600;color:#d9ecff}
+    .main{padding:18px 20px;overflow:auto;min-width:1080px}
+    .pageTitle{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;gap:16px}
+    .pageTitle h1{margin:0;font-size:24px}
+    .hint{color:var(--muted);font-size:13px;line-height:1.6;margin-top:4px}
+    .panel{background:var(--card);border:1px solid #edf2f7;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px}
+    .panelHeader{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid #edf2f7;gap:12px}
+    .panelTitle{font-weight:900;font-size:18px}
+    .panelBody{padding:16px 18px}
+    .btn{border:0;border-radius:8px;padding:9px 14px;font-weight:800;font-size:14px;cursor:pointer;transition:.12s;white-space:nowrap}
+    .btn:hover{transform:translateY(-1px);filter:brightness(.98)}
+    .btnPrimary{background:linear-gradient(180deg,#0b74df,#0059bd);color:#fff}
+    .btnLight{background:#f2f6fb;color:#334155;border:1px solid #dbe4ee}
+    .btnDanger{background:#ffe3e3;color:#c92a2a;border:1px solid #ffc9c9}
+    .btnWarn{background:#fff3bf;color:#b46900;border:1px solid #ffe08a}
+    .btnGreen{background:#dcfce7;color:#15803d;border:1px solid #bbf7d0}
+    .btnPurple{background:#eee5ff;color:#6741d9;border:1px solid #d7c7ff}
+    .btnTiny{padding:6px 9px;font-size:12px}
+    .kpiGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:16px}
+    .kpi{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #edf2f7;text-align:center;padding:18px 10px;cursor:pointer}
+    .kpi:hover{outline:2px solid #b7d7ff}
+    .kpi .label{font-weight:900;color:#334155;font-size:14px}
+    .kpi .num{font-size:39px;margin:8px 0 5px;line-height:1;font-weight:500}
+    .kpi small{font-size:15px;color:#111;margin-left:2px}
+    .kpi .sub{font-size:13px;color:#64748b}
+    .grid2{display:grid;grid-template-columns:1.55fr .95fr;gap:16px}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .formGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .formGrid.three{grid-template-columns:repeat(3,1fr)}
+    .field label{display:block;font-weight:900;margin-bottom:7px;color:#334155}
+    .field input,.field select,.field textarea{width:100%;border:1px solid #cfd8e3;border-radius:8px;background:#fff;padding:10px 11px;font-size:14px}
+    .field textarea{min-height:92px;resize:vertical}
+    .field.full{grid-column:1/-1}
+    .tabs{display:flex;gap:20px;border-bottom:1px solid var(--border);padding:0 18px}
+    .tab{height:42px;display:flex;align-items:center;border-bottom:3px solid transparent;font-weight:800;font-size:14px;color:#334155;cursor:pointer}
+    .tab.active{border-color:var(--blue);color:var(--blue)}
+    .filters{display:flex;flex-wrap:wrap;gap:10px;padding:14px 18px}
+    .filters select,.filters input{height:36px;border:1px solid #cfd8e3;border-radius:7px;background:#fff;padding:0 10px}
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    .tableWrap{padding:0 14px 14px;overflow:auto}
+    th,td{padding:11px 9px;border-bottom:1px solid #e5edf5;text-align:left;white-space:nowrap}
+    th{background:#f8fafc;font-weight:900;color:#334155}
+    tr:hover td{background:#f8fbff}
+    .tag{display:inline-block;border-radius:7px;padding:4px 8px;font-size:12px;font-weight:900;border:1px solid transparent}
+    .tagRed{background:#ffe3e3;color:#d90429;border-color:#ffc9c9}
+    .tagBlue{background:#d8ebff;color:#0b63ce;border-color:#bddcff}
+    .tagGreen{background:#dcfce7;color:#15803d;border-color:#bbf7d0}
+    .tagOrange{background:#fff1d6;color:#d97706;border-color:#ffdaa2}
+    .tagPurple{background:#eee5ff;color:#6741d9;border-color:#d7c7ff}
+    .tagGray{background:#eef2f6;color:#475569;border-color:#d8dee7}
+    .tagDark{background:#0f172a;color:#fff}
+    .detailGrid{display:grid;grid-template-columns:110px 1fr;gap:10px 8px;font-size:14px}
+    .detailGrid .label{font-weight:900;color:#334155}
+    .divider{height:1px;background:#edf2f7;margin:14px 0}
+    .progressLine{display:grid;grid-template-columns:repeat(6,1fr);gap:0;position:relative;margin:12px 0}
+    .progressLine:before{content:"";position:absolute;left:7%;right:7%;top:17px;height:3px;background:#cbd5e1}
+    .step{text-align:center;position:relative;z-index:1;font-size:12px;color:#64748b;font-weight:800}
+    .dot{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;margin:0 auto 7px;background:#fff;border:2px solid #94a3b8}
+    .step.active .dot{background:var(--blue);border-color:var(--blue);color:#fff}
+    .logBox{background:#0f172a;color:#dbeafe;border-radius:12px;padding:12px;height:260px;overflow:auto;font-family:Consolas,monospace;font-size:12px;line-height:1.55}
+    .toast{position:fixed;right:18px;bottom:18px;background:#0f172a;color:#fff;padding:12px 14px;border-radius:10px;box-shadow:0 10px 25px rgba(0,0,0,.25);opacity:0;pointer-events:none;transform:translateY(10px);transition:.2s;z-index:100}
+    .toast.show{opacity:1;transform:translateY(0)}
+    .modalBackdrop{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;z-index:90;padding:20px}
+    .modalBackdrop.show{display:flex}
+    .modal{background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.25);max-width:760px;width:100%;max-height:86vh;overflow:auto}
+    .modalHeader{padding:16px 18px;border-bottom:1px solid #edf2f7;display:flex;justify-content:space-between;align-items:center}
+    .modalBody{padding:16px 18px}
+    .modalFooter{padding:14px 18px;border-top:1px solid #edf2f7;display:flex;gap:10px;justify-content:flex-end}
+    .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .miniCard{border:1px solid #dbe4ee;background:#fff;border-radius:12px;padding:14px;cursor:pointer}
+    .miniCard:hover{outline:2px solid #b7d7ff}
+    .miniCard .big{font-size:28px;font-weight:700;margin-top:6px}
+    .bar{height:9px;background:#e2e8f0;border-radius:999px;overflow:hidden}
+    .bar span{display:block;height:100%;background:var(--blue);border-radius:999px}
+    .flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .flowNode{background:#eef7ff;color:#0b63ce;border:1px solid #b7d7ff;border-radius:10px;padding:10px 12px;font-weight:900}
+    .arrow{color:#64748b;font-weight:900}
+    .empty{padding:30px;text-align:center;color:#64748b}
+    .warnBox{background:#fff8e1;border:1px solid #ffe08a;color:#7a4b00;border-radius:12px;padding:12px;line-height:1.6}
+    .okBox{background:#ecfff3;border:1px solid #bbf7d0;color:#166534;border-radius:12px;padding:12px;line-height:1.6}
+    .badBox{background:#fff0f0;border:1px solid #ffc9c9;color:#b42318;border-radius:12px;padding:12px;line-height:1.6}
+    .checkbox{display:inline-block;width:16px;height:16px;border:1px solid #94a3b8;border-radius:4px;background:#fff}
+    @media(max-width:1300px){.kpiGrid{grid-template-columns:repeat(3,1fr)}.grid2{grid-template-columns:1fr}.app{grid-template-columns:230px 1fr}.topbar{grid-template-columns:230px 1fr}.sidebar{width:230px}.brand{font-size:18px}.cycleBox{min-width:360px}.main{min-width:900px}}
   </style>
 </head>
-
 <body>
-  <div class="app">
-    <header class="topbar">
-      <div class="brand">
-        <div class="grid-icon" aria-hidden="true">
-          <span></span><span></span><span></span>
-          <span></span><span></span><span></span>
-          <span></span><span></span><span></span>
-        </div>
-        <span>5S 稽核管理系統</span>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><div class="gridIcon"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>5S 稽核管理系統</div>
+    <div class="topMain">
+      <button class="cycleBox btn" data-action="showCycle">當前稽核週：2025-W23（05/26 08:00 ~ 05/30 17:00）⌄</button>
+      <div class="topTools">
+        <input id="simTime" class="timeInput" type="datetime-local" />
+        <select id="roleSelect" class="roleSelect">
+          <option>稽核人員</option><option>一般員工</option><option>改善單位</option><option>管理部</option><option>主管</option>
+        </select>
+        <button class="btn btnLight" data-action="runDeadlineCheck">期限檢核</button>
+        <button class="btn btnLight" data-action="resetDemo">重置</button>
+        <div class="userBox"><div class="avatar">王</div><div><b id="userName">王小明</b><br><span id="userRoleText">稽核人員</span></div></div>
       </div>
+    </div>
+  </header>
 
-      <div class="top-content">
-        <div class="cycle-select">☰　當前稽核週：2025-W23（05/26 08:00 ~ 05/30 17:00）　⌄</div>
-        <div class="top-actions">
-          <div class="bell">🔔<span class="badge">12</span></div>
-          <div>？</div>
-          <div class="user">
-            <div class="avatar">王</div>
-            <div><strong>王小明</strong><br />稽核人員</div>
-            <div>⌄</div>
-          </div>
-        </div>
-      </div>
-    </header>
+  <aside class="sidebar">
+    <div class="sideTitle">主選單</div>
+    <div id="nav"></div>
+  </aside>
 
-    <aside class="sidebar">
-      <div class="side-title">主選單</div>
+  <main class="main">
+    <div id="app"></div>
+  </main>
+</div>
 
-      <div class="nav-item">⌂　首頁儀表板</div>
-
-      <div class="nav-item">▣　稽核作業 <span class="arrow">⌃</span></div>
-      <div class="nav-sub active">稽核清單</div>
-      <div class="nav-sub">新增扣分單</div>
-      <div class="nav-sub">我的稽核紀錄</div>
-
-      <div class="nav-spacer"></div>
-      <div class="nav-item">✩　加分提報 <span class="arrow">⌃</span></div>
-      <div class="nav-sub">新增加分單</div>
-      <div class="nav-sub">我的加分紀錄</div>
-
-      <div class="nav-spacer"></div>
-      <div class="nav-item">▤　改善管理 <span class="arrow">⌃</span></div>
-      <div class="nav-sub">待改善清單</div>
-      <div class="nav-sub">我提出的改善</div>
-      <div class="nav-sub">逾期案件</div>
-
-      <div class="nav-spacer"></div>
-      <div class="nav-item">⟳　前期追蹤 <span class="arrow">⌃</span></div>
-      <div class="nav-sub">追蹤專案清單</div>
-      <div class="nav-sub">追蹤統計</div>
-
-      <div class="nav-spacer"></div>
-      <div class="nav-item">▥　統計報表 <span class="arrow">⌃</span></div>
-      <div class="nav-sub">部門排名</div>
-      <div class="nav-sub">缺失統計</div>
-      <div class="nav-sub">加分統計</div>
-      <div class="nav-sub">趨勢分析</div>
-
-      <div class="nav-spacer"></div>
-      <div class="nav-item">▦　主檔資料 <span class="arrow">⌄</span></div>
-      <div class="nav-item">⚙　系統管理 <span class="arrow">⌄</span></div>
-    </aside>
-
-    <main class="main">
-      <section class="kpi-grid">
-        <div class="kpi-card">
-          <div class="kpi-title">本週缺失總數</div>
-          <div class="kpi-value" style="color:var(--red)">28 <small>件</small></div>
-          <div class="trend up-red">較上週 ▲ 12%</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-title">逾期未改善</div>
-          <div class="kpi-value" style="color:var(--orange)">6 <small>件</small></div>
-          <div class="trend up-red">較上週 ▲ 20%</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-title">本週加分案件</div>
-          <div class="kpi-value" style="color:var(--green)">18 <small>件</small></div>
-          <div class="trend up-green">較上週 ▲ 38%</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-title">本週部門總分</div>
-          <div class="kpi-value" style="color:var(--blue-600)">-35 <small>分</small></div>
-          <div class="trend down-blue">較上週 ▼ 8分</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-title">改善完成率</div>
-          <div class="kpi-value" style="color:var(--blue-600)">82 <small>%</small></div>
-          <div class="trend up-green">較上週 ▲ 5%</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-title">季度追蹤未完成</div>
-          <div class="kpi-value" style="color:var(--purple)">4 <small>件</small></div>
-          <div class="trend up-red">較上季 ▲ 1件</div>
-        </div>
-      </section>
-
-      <section class="content-grid">
-        <div>
-          <div class="panel">
-            <div class="panel-header">
-              <div class="panel-title">稽核清單</div>
-              <button class="btn btn-primary">＋ 新增扣分單</button>
-            </div>
-
-            <div class="tabs">
-              <div class="tab active">全部</div>
-              <div class="tab">待改善 (8)</div>
-              <div class="tab">改善中 (10)</div>
-              <div class="tab">待複驗 (3)</div>
-              <div class="tab">待完成 (2)</div>
-              <div class="tab">已結案 (47)</div>
-            </div>
-
-            <div class="filters">
-              <select><option>全部狀態</option></select>
-              <select><option>全部部門</option></select>
-              <select><option>2025-W23</option></select>
-              <button class="btn btn-primary">查詢</button>
-              <button class="btn btn-light">重設</button>
-            </div>
-
-            <table>
-              <thead>
-                <tr>
-                  <th><span class="check"></span></th>
-                  <th>編號</th>
-                  <th>開單時間</th>
-                  <th>稽核區域</th>
-                  <th>部門</th>
-                  <th>缺失項目</th>
-                  <th>狀態</th>
-                  <th>改善期限</th>
-                  <th>扣分</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><span class="check"></span></td>
-                  <td>CL-2025-23001</td>
-                  <td>05/26 09:15</td>
-                  <td>二廠1F-組裝區</td>
-                  <td>組裝課</td>
-                  <td><span class="tag tag-red">安全</span></td>
-                  <td><span class="tag tag-orange">待改善</span></td>
-                  <td>06/06 17:00</td>
-                  <td class="score-minus">-5</td>
-                  <td><button class="btn btn-ghost">檢視</button></td>
-                </tr>
-                <tr>
-                  <td><span class="check"></span></td>
-                  <td>CL-2025-23002</td>
-                  <td>05/26 10:02</td>
-                  <td>二廠1F-包裝區</td>
-                  <td>包裝課</td>
-                  <td><span class="tag tag-gray">整理</span></td>
-                  <td><span class="tag tag-blue">改善中</span></td>
-                  <td>06/06 17:00</td>
-                  <td class="score-minus">-3</td>
-                  <td><button class="btn btn-ghost">檢視</button></td>
-                </tr>
-                <tr>
-                  <td><span class="check"></span></td>
-                  <td>CL-2025-23003</td>
-                  <td>05/26 11:05</td>
-                  <td>一廠2F-倉庫</td>
-                  <td>倉儲課</td>
-                  <td><span class="tag tag-gray">整頓</span></td>
-                  <td><span class="tag tag-purple">待複驗</span></td>
-                  <td>06/06 17:00</td>
-                  <td class="score-minus">-3</td>
-                  <td><button class="btn btn-ghost">檢視</button></td>
-                </tr>
-                <tr>
-                  <td><span class="check"></span></td>
-                  <td>CL-2025-23004</td>
-                  <td>05/27 08:50</td>
-                  <td>二廠2F-研發區</td>
-                  <td>研發課</td>
-                  <td><span class="tag tag-gray">清潔</span></td>
-                  <td><span class="tag tag-green">待完成</span></td>
-                  <td>06/06 17:00</td>
-                  <td class="score-minus">-3</td>
-                  <td><button class="btn btn-ghost">檢視</button></td>
-                </tr>
-                <tr>
-                  <td><span class="check"></span></td>
-                  <td>CL-2025-23005</td>
-                  <td>05/27 09:30</td>
-                  <td>二廠1F-辦公區</td>
-                  <td>管理部</td>
-                  <td><span class="tag tag-orange">教養</span></td>
-                  <td><span class="tag tag-red">逾期未改</span></td>
-                  <td>06/06 17:00</td>
-                  <td class="score-minus">-4</td>
-                  <td><button class="btn btn-ghost">檢視</button></td>
-                </tr>
-                <tr>
-                  <td><span class="check"></span></td>
-                  <td>CL-2025-23006</td>
-                  <td>05/27 10:10</td>
-                  <td>一廠1F-設備區</td>
-                  <td>生產課</td>
-                  <td><span class="tag tag-blue">清掃</span></td>
-                  <td><span class="tag tag-red">退件重改</span></td>
-                  <td>06/13 17:00</td>
-                  <td class="score-minus">-3</td>
-                  <td><button class="btn btn-ghost">檢視</button></td>
-                </tr>
-                <tr>
-                  <td><span class="check"></span></td>
-                  <td>CL-2025-23007</td>
-                  <td>05/28 14:20</td>
-                  <td>二廠3F-實驗室</td>
-                  <td>品管課</td>
-                  <td><span class="tag tag-red">安全</span></td>
-                  <td><span class="tag tag-blue">申訴中</span></td>
-                  <td>06/06 17:00</td>
-                  <td class="score-minus">-5</td>
-                  <td><button class="btn btn-ghost">檢視</button></td>
-                </tr>
-                <tr>
-                  <td><span class="check"></span></td>
-                  <td>CL-2025-23008</td>
-                  <td>05/28 15:40</td>
-                  <td>二廠1F-宿舍區</td>
-                  <td>管理部</td>
-                  <td><span class="tag tag-gray">教養</span></td>
-                  <td><span class="tag tag-gray">已結案</span></td>
-                  <td>05/30 12:00</td>
-                  <td class="score-minus">-4</td>
-                  <td><button class="btn btn-ghost">檢視</button></td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div class="pagination">
-              <div>共 28 筆</div>
-              <div class="pages">
-                <span>‹</span>
-                <span class="page active">1</span>
-                <span class="page">2</span>
-                <span class="page">3</span>
-                <span>›</span>
-              </div>
-              <div>
-                <select style="min-width:100px;"><option>每頁 10</option></select>　筆
-              </div>
-            </div>
-          </div>
-
-          <div class="bottom-grid">
-            <div class="panel info-card">
-              <div class="panel-title">稽核週期說明</div>
-              <div class="cycle-boxes">
-                <div class="cycle-box blue">
-                  開單週（第1週）<br />
-                  <span class="small-muted">週一 08:00 ~ 週五 17:00<br />可開立扣分單</span>
-                </div>
-                <div class="cycle-box green">
-                  改善週（第1週～第2週五）<br />
-                  <span class="small-muted">週一 08:00 ~ 週五 17:00<br />責任單位改善並上傳佐證</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="panel">
-              <div class="panel-header">
-                <div>
-                  <div class="panel-title">前期追蹤概況</div>
-                  <div class="small-muted">本季：2025 Q2（4–6月）</div>
-                </div>
-                <button class="btn btn-ghost">前往追蹤清單</button>
-              </div>
-              <div class="track-cards">
-                <div class="track-card track-blue">追蹤中<div class="num">12 件</div></div>
-                <div class="track-card track-green">已完成<div class="num">8 件</div></div>
-                <div class="track-card track-red">逾期未完成<div class="num">4 件</div></div>
-                <div class="track-card track-orange">即將到期<div class="num">2 件</div></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="right-stack">
-          <div class="panel detail">
-            <div class="detail-header">
-              <div>
-                <div class="panel-title">缺失單明細</div>
-                <div class="case-id">CL-2025-23001 <span class="tag tag-orange" style="font-size:13px;vertical-align:middle;">待改善</span></div>
-              </div>
-              <div style="font-size:24px;color:#64748b;">×</div>
-            </div>
-
-            <div class="detail-grid">
-              <div class="label">開單時間：</div><div class="value">2025/05/26 09:15</div>
-              <div class="label">稽核人員：</div><div class="value">王小明、李小華</div>
-              <div class="label">稽核區域：</div><div class="value">二廠 1F - 組裝區</div>
-              <div class="label">責任部門：</div><div class="value">組裝課</div>
-              <div class="label">缺失項目：</div><div class="value"><span class="tag tag-red">安全</span></div>
-              <div class="label">扣分：</div><div class="value">-5 分</div>
-              <div class="label">改善期限：</div><div class="value">2025/06/06 17:00（第1週一～第2週五）</div>
-              <div class="label">描述：</div><div class="value">滅火器前方放置物品，影響緊急取用。</div>
-            </div>
-
-            <div style="padding:12px 20px 0;font-weight:800;">缺失照片：</div>
-            <div class="thumbs">
-              <div class="thumb"></div>
-              <div class="thumb"></div>
-              <div class="thumb"><span class="more">+2</span></div>
-            </div>
-
-            <div class="progress">
-              <div style="font-weight:800;">改善進度：</div>
-              <div class="progress-line">
-                <div class="step active"><div class="dot">1</div>開單成立</div>
-                <div class="step"><div class="dot">2</div>改善中</div>
-                <div class="step"><div class="dot">3</div>待複驗</div>
-                <div class="step"><div class="dot">4</div>待完成</div>
-                <div class="step"><div class="dot">5</div>結案</div>
-              </div>
-            </div>
-
-            <div class="detail-grid">
-              <div class="label">改善說明：</div><div class="value">尚未填寫</div>
-              <div class="label">改善照片：</div><div class="value">尚未上傳</div>
-              <div class="label">申訴狀態：</div><div class="value">無</div>
-              <div class="label">追蹤狀態：</div><div class="value">否</div>
-            </div>
-
-            <div class="detail-actions">
-              <button class="btn btn-primary">編輯</button>
-              <button class="btn btn-warning">退件</button>
-              <button class="btn btn-primary">申訴處理</button>
-              <button class="btn btn-light">更多⌄</button>
-            </div>
-          </div>
-
-          <div class="panel">
-            <div class="panel-header">
-              <div class="panel-title">快速操作</div>
-            </div>
-            <div class="quick-actions">
-              <div class="quick">
-                <div class="quick-icon qi-red">▣</div>
-                新增扣分單
-              </div>
-              <div class="quick">
-                <div class="quick-icon qi-green">☆</div>
-                新增加分單
-              </div>
-              <div class="quick">
-                <div class="quick-icon qi-blue">🔗</div>
-                前期追蹤
-              </div>
-              <div class="quick">
-                <div class="quick-icon qi-purple">▤</div>
-                報表中心
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
+<div id="modalBackdrop" class="modalBackdrop">
+  <div class="modal">
+    <div class="modalHeader"><div class="panelTitle" id="modalTitle">視窗</div><button class="btn btnLight" data-action="closeModal">關閉</button></div>
+    <div class="modalBody" id="modalBody"></div>
+    <div class="modalFooter" id="modalFooter"></div>
   </div>
+</div>
+<div id="toast" class="toast"></div>
+
+<script>
+const CYCLE = {
+  id:'2025-W23',
+  openStart:'2025-05-26T08:00',
+  openEnd:'2025-05-30T17:00',
+  improveStart:'2025-05-26T08:00',
+  improveEnd:'2025-06-06T17:00',
+  quarter:'2025-Q2',
+  quarterStart:'2025-04-01T08:00',
+  quarterEnd:'2025-06-30T17:00'
+};
+
+const categories = [
+  {name:'整理', score:-3, color:'tagGray'},
+  {name:'整頓', score:-3, color:'tagGray'},
+  {name:'清掃', score:-3, color:'tagBlue'},
+  {name:'清潔', score:-3, color:'tagGray'},
+  {name:'教養', score:-4, color:'tagOrange'},
+  {name:'安全', score:-5, color:'tagRed'}
+];
+
+const departments = ['組裝課','包裝課','倉儲課','研發課','管理部','生產課','品管課','資訊室'];
+
+const navItems = [
+  {id:'dashboard', icon:'⌂', text:'首頁儀表板'},
+  {id:'audit', icon:'▣', text:'稽核清單'},
+  {id:'newDeduct', icon:'−', text:'新增扣分單'},
+  {id:'bonus', icon:'☆', text:'加分提報'},
+  {id:'improvement', icon:'▤', text:'改善管理'},
+  {id:'tracking', icon:'⟳', text:'前期追蹤'},
+  {id:'reports', icon:'▥', text:'統計報表'},
+  {id:'masters', icon:'▦', text:'主檔資料'},
+  {id:'logic', icon:'✓', text:'邏輯驗證中心'},
+  {id:'system', icon:'⚙', text:'系統設定'}
+];
+
+const sampleState = () => ({
+  currentModule:'dashboard',
+  filterStatus:'全部',
+  selectedCaseId:'CL-2025-23001',
+  selectedBonusId:'AD-2025-23001',
+  simTime:'2025-05-27T10:00',
+  role:'稽核人員',
+  logs:[
+    '系統初始化：以 5S 稽核與改善執行規則及補充文字作為邏輯基礎。',
+    '扣分項：稽核人員於開單週開單，開單即成立。',
+    '加分項：全員可提報，不分時段，需審單確認成立後計入當週。',
+    '申訴：改善單位提出後，案件回到稽核人員處理。'
+  ],
+  cases:[
+    {id:'CL-2025-23001', type:'扣分', createdAt:'2025-05-26T09:15', auditor:'王小明、李小華', area:'二廠1F-組裝區', dept:'組裝課', category:'安全', score:-5, status:'待改善', due:CYCLE.improveEnd, desc:'滅火器前方放置物品，影響緊急取用。', appeal:'無', tracking:false, rejectDue:'', improveText:'', closeAt:''},
+    {id:'CL-2025-23002', type:'扣分', createdAt:'2025-05-26T10:02', auditor:'王小明、李小華', area:'二廠1F-包裝區', dept:'包裝課', category:'整理', score:-3, status:'改善中', due:CYCLE.improveEnd, desc:'包裝材料未定位，作業區動線不清。', appeal:'無', tracking:false, rejectDue:'', improveText:'已整理紙箱並重新定位。', closeAt:''},
+    {id:'CL-2025-23003', type:'扣分', createdAt:'2025-05-26T11:05', auditor:'王小明、李小華', area:'一廠2F-倉庫', dept:'倉儲課', category:'整頓', score:-3, status:'申訴中', due:CYCLE.improveEnd, desc:'料架標示不清，部分物料混放。', appeal:'責任單位表示該料架由生產課暫放，申訴責任歸屬。', tracking:false, rejectDue:'', improveText:'', closeAt:''},
+    {id:'CL-2025-23004', type:'扣分', createdAt:'2025-05-27T08:50', auditor:'王小明、李小華', area:'二廠2F-研發區', dept:'研發課', category:'清潔', score:-3, status:'待複驗', due:CYCLE.improveEnd, desc:'桌面與儀器周邊髒污未清理。', appeal:'無', tracking:false, rejectDue:'', improveText:'已完成清潔並上傳改善照片。', closeAt:''},
+    {id:'CL-2025-23005', type:'扣分', createdAt:'2025-05-27T09:30', auditor:'王小明、李小華', area:'二廠1F-辦公區', dept:'管理部', category:'教養', score:-4, status:'逾期未改', due:CYCLE.improveEnd, desc:'會議室使用後電燈與冷氣未關閉。', appeal:'無', tracking:false, rejectDue:'', improveText:'', closeAt:''},
+    {id:'CL-2025-23006', type:'扣分', createdAt:'2025-05-27T10:10', auditor:'王小明、李小華', area:'一廠1F-設備區', dept:'生產課', category:'清掃', score:-3, status:'退件重改', due:CYCLE.improveEnd, desc:'設備下方積塵與油污未清理。', appeal:'無', tracking:false, rejectDue:'2025-06-13T17:00', improveText:'第一次改善照片模糊，退件重改。', closeAt:''},
+    {id:'CL-2025-23007', type:'扣分', createdAt:'2025-05-28T14:20', auditor:'王小明、李小華', area:'二廠3F-實驗室', dept:'品管課', category:'安全', score:-5, status:'前期追蹤', due:CYCLE.quarterEnd, desc:'測試區電線配置需改善，需跨單位協助。', appeal:'無', tracking:true, trackingQuarter:'2025-Q2', rejectDue:'', improveText:'需設備與品管共同改善。', closeAt:''}
+  ],
+  bonus:[
+    {id:'AD-2025-23001', createdAt:'2025-05-27T13:20', proposer:'資訊室', targetDept:'組裝課', area:'二廠1F-組裝區', title:'主動提報通道標示改善', desc:'發現走道標示磨損，建議重新貼線。', status:'待審單', score:0, week:'2025-W23'},
+    {id:'AD-2025-23002', createdAt:'2025-05-28T09:45', proposer:'包裝課', targetDept:'倉儲課', area:'一廠2F-倉庫', title:'主動提報料架定位改善', desc:'提報料架定位標籤不清，經確認具改善價值。', status:'已成立', score:5, week:'2025-W23'}
+  ]
+});
+
+let state = JSON.parse(localStorage.getItem('fiveSInteractiveState') || 'null') || sampleState();
+
+function save(){ localStorage.setItem('fiveSInteractiveState', JSON.stringify(state)); }
+function dt(s){ return new Date(s); }
+function fmt(s){ if(!s) return '-'; const d=dt(s); return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
+function fmtShort(s){ const d=dt(s); return `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
+function now(){ return state.simTime; }
+function isBetween(t,a,b){ const x=dt(t).getTime(); return x>=dt(a).getTime() && x<=dt(b).getTime(); }
+function inOpenWeek(){ return isBetween(now(), CYCLE.openStart, CYCLE.openEnd); }
+function inImproveWeek(){ return isBetween(now(), CYCLE.improveStart, CYCLE.improveEnd); }
+function currentQuarter(t=now()){
+  const m = dt(t).getMonth()+1; const y = dt(t).getFullYear();
+  if(m<=3) return `${y}-Q1`; if(m<=6) return `${y}-Q2`; if(m<=9) return `${y}-Q3`; return `${y}-Q4`;
+}
+function quarterRange(q){
+  const [y,qq] = q.split('-Q'); const year=Number(y);
+  const ranges={1:['01/01','03/31'],2:['04/01','06/30'],3:['07/01','09/30'],4:['10/01','12/31']};
+  return `${year}/${ranges[qq][0]} ~ ${year}/${ranges[qq][1]}`;
+}
+function nextId(prefix, arr){ return `${prefix}-2025-${String(23000 + arr.length + 1)}`; }
+function catObj(name){ return categories.find(c=>c.name===name) || categories[0]; }
+function tagStatus(s){
+  const map = {
+    '待改善':'tagOrange','改善中':'tagBlue','待複驗':'tagPurple','已結案':'tagGray','申訴中':'tagBlue','逾期未改':'tagRed',
+    '退件重改':'tagRed','前期追蹤':'tagPurple','作廢':'tagGray','待審單':'tagOrange','已成立':'tagGreen','駁回':'tagGray'
+  };
+  return `<span class="tag ${map[s]||'tagGray'}">${s}</span>`;
+}
+function tagCat(c){ return `<span class="tag ${catObj(c).color}">${c}</span>`; }
+function toast(msg){ const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2400); }
+function log(msg){ state.logs.unshift(`${fmt(now())}｜${msg}`); if(state.logs.length>80) state.logs.pop(); save(); }
+function setModule(m){ state.currentModule=m; save(); render(); }
+function currentCase(){ return state.cases.find(x=>x.id===state.selectedCaseId) || state.cases[0]; }
+function currentBonus(){ return state.bonus.find(x=>x.id===state.selectedBonusId) || state.bonus[0]; }
+
+function renderNav(){
+  document.getElementById('nav').innerHTML = navItems.map(n=>`
+    <div class="navGroup"><button class="navBtn ${state.currentModule===n.id?'active':''}" data-module="${n.id}">${n.icon}　${n.text}</button></div>
+  `).join('');
+}
+function render(){
+  document.getElementById('simTime').value = state.simTime;
+  document.getElementById('roleSelect').value = state.role;
+  document.getElementById('userRoleText').textContent = state.role;
+  renderNav();
+  const app=document.getElementById('app');
+  const m=state.currentModule;
+  if(m==='dashboard') app.innerHTML=renderDashboard();
+  if(m==='audit') app.innerHTML=renderAudit();
+  if(m==='newDeduct') app.innerHTML=renderNewDeduct();
+  if(m==='bonus') app.innerHTML=renderBonus();
+  if(m==='improvement') app.innerHTML=renderImprovement();
+  if(m==='tracking') app.innerHTML=renderTracking();
+  if(m==='reports') app.innerHTML=renderReports();
+  if(m==='masters') app.innerHTML=renderMasters();
+  if(m==='logic') app.innerHTML=renderLogic();
+  if(m==='system') app.innerHTML=renderSystem();
+}
+
+function counts(){
+  const open = state.cases.filter(c=>c.status!=='已結案' && c.status!=='作廢').length;
+  const overdue = state.cases.filter(c=>c.status==='逾期未改').length;
+  const bonusOk = state.bonus.filter(b=>b.status==='已成立').length;
+  const score = state.cases.reduce((s,c)=>s+(c.status==='作廢'?0:c.score),0)+state.bonus.reduce((s,b)=>s+b.score,0);
+  const closed = state.cases.filter(c=>c.status==='已結案').length;
+  const rate = Math.round((closed/Math.max(state.cases.length,1))*100);
+  const tracking = state.cases.filter(c=>c.tracking && c.status!=='已結案').length;
+  return {open,overdue,bonusOk,score,rate,tracking};
+}
+function renderDashboard(){
+  const c=counts();
+  return `
+    <div class="pageTitle">
+      <div><h1>首頁儀表板</h1><div class="hint">所有卡片、列表、快速操作都可點擊。上方可切換角色與模擬時間，用來驗證規則。</div></div>
+      <div class="${inOpenWeek()?'okBox':'warnBox'}">目前時間：${fmt(now())}<br>開單週：${inOpenWeek()?'可開扣分單':'不可開扣分單'}｜改善週：${inImproveWeek()?'改善期限內':'不在改善週內'}</div>
+    </div>
+    <div class="kpiGrid">
+      <div class="kpi" data-action="filterStatus" data-status="全部"><div class="label">本週缺失總數</div><div class="num" style="color:var(--red)">${state.cases.length}<small>件</small></div><div class="sub">點擊查看全部</div></div>
+      <div class="kpi" data-action="filterStatus" data-status="逾期未改"><div class="label">逾期未改善</div><div class="num" style="color:var(--orange)">${c.overdue}<small>件</small></div><div class="sub">退件一週未完成列逾期</div></div>
+      <div class="kpi" data-module="bonus"><div class="label">本週加分案件</div><div class="num" style="color:var(--green)">${c.bonusOk}<small>件</small></div><div class="sub">審單成立才計分</div></div>
+      <div class="kpi" data-module="reports"><div class="label">本週部門總分</div><div class="num" style="color:var(--blue)">${c.score}<small>分</small></div><div class="sub">扣分 + 加分</div></div>
+      <div class="kpi" data-module="improvement"><div class="label">改善完成率</div><div class="num" style="color:var(--blue)">${c.rate}<small>%</small></div><div class="sub">已結案 / 全部扣分單</div></div>
+      <div class="kpi" data-module="tracking"><div class="label">季度追蹤未完成</div><div class="num" style="color:var(--purple)">${c.tracking}<small>件</small></div><div class="sub">3 個月為一季</div></div>
+    </div>
+    <div class="grid2">
+      <div>
+        <div class="panel">
+          <div class="panelHeader"><div class="panelTitle">稽核清單</div><button class="btn btnPrimary" data-module="newDeduct">＋ 新增扣分單</button></div>
+          ${renderCaseTable(state.cases.slice(0,6))}
+        </div>
+        <div class="grid2">
+          <div class="panel"><div class="panelHeader"><div class="panelTitle">稽核週期說明</div></div><div class="panelBody">
+            <div class="flow">
+              <div class="flowNode">開單週<br><small>第1週一 08:00 ~ 週五 17:00</small></div><span class="arrow">→</span>
+              <div class="flowNode">改善週<br><small>第1週一 08:00 ~ 第2週五 17:00</small></div><span class="arrow">→</span>
+              <div class="flowNode">結案 / 逾期 / 追蹤</div>
+            </div>
+          </div></div>
+          <div class="panel"><div class="panelHeader"><div class="panelTitle">前期追蹤概況</div><button class="btn btnLight" data-module="tracking">前往</button></div>
+            <div class="panelBody">
+              <div class="cards">
+                <div class="miniCard" data-module="tracking">追蹤中<div class="big" style="color:var(--blue)">${c.tracking}</div></div>
+                <div class="miniCard" data-action="runDeadlineCheck">期限檢核<div class="big" style="color:var(--orange)">GO</div></div>
+                <div class="miniCard" data-module="reports">報表<div class="big" style="color:var(--green)">↗</div></div>
+                <div class="miniCard" data-module="logic">驗證<div class="big" style="color:var(--purple)">✓</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        ${renderDetailPanel(currentCase())}
+        <div class="panel">
+          <div class="panelHeader"><div class="panelTitle">快速操作</div></div>
+          <div class="panelBody grid4">
+            <button class="btn btnPrimary" data-module="newDeduct">新增扣分單</button>
+            <button class="btn btnGreen" data-module="bonus">新增加分單</button>
+            <button class="btn btnPurple" data-module="tracking">前期追蹤</button>
+            <button class="btn btnLight" data-module="reports">報表中心</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+function renderCaseTable(rows){
+  if(!rows.length) return `<div class="empty">目前沒有資料</div>`;
+  return `<div class="tableWrap"><table><thead><tr>
+    <th><span class="checkbox"></span></th><th>編號</th><th>開單時間</th><th>稽核區域</th><th>部門</th><th>缺失項目</th><th>狀態</th><th>期限</th><th>扣分</th><th>操作</th>
+  </tr></thead><tbody>${rows.map(r=>`<tr>
+    <td><span class="checkbox"></span></td><td>${r.id}</td><td>${fmtShort(r.createdAt)}</td><td>${r.area}</td><td>${r.dept}</td><td>${tagCat(r.category)}</td><td>${tagStatus(r.status)}</td><td>${fmtShort(r.rejectDue||r.due)}</td><td style="color:var(--red);font-weight:900">${r.status==='作廢'?0:r.score}</td>
+    <td><button class="btn btnLight btnTiny" data-action="selectCase" data-id="${r.id}">檢視</button></td>
+  </tr>`).join('')}</tbody></table></div>`;
+}
+function renderDetailPanel(c){
+  if(!c) return '';
+  return `<div class="panel">
+    <div class="panelHeader"><div><div class="panelTitle">缺失單明細</div><div style="font-size:22px;color:var(--red);font-weight:900;margin-top:8px">${c.id} ${tagStatus(c.status)}</div></div><button class="btn btnLight" data-action="openCaseModal" data-id="${c.id}">完整檢視</button></div>
+    <div class="panelBody">
+      <div class="detailGrid">
+        <div class="label">開單時間：</div><div>${fmt(c.createdAt)}</div>
+        <div class="label">稽核人員：</div><div>${c.auditor}</div>
+        <div class="label">稽核區域：</div><div>${c.area}</div>
+        <div class="label">責任部門：</div><div>${c.dept}</div>
+        <div class="label">缺失項目：</div><div>${tagCat(c.category)}　${c.score} 分</div>
+        <div class="label">改善期限：</div><div>${fmt(c.rejectDue||c.due)}</div>
+        <div class="label">描述：</div><div>${c.desc}</div>
+        <div class="label">申訴內容：</div><div>${c.appeal||'無'}</div>
+      </div>
+      <div class="divider"></div>
+      <div class="progressLine">
+        ${['開單成立','改善中','待複驗','退件重改','前期追蹤','結案'].map((s,i)=>`<div class="step ${activeStep(c.status,s)?'active':''}"><div class="dot">${i+1}</div>${s}</div>`).join('')}
+      </div>
+      <div class="divider"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <button class="btn btnWarn" data-action="appealCase" data-id="${c.id}">改善單位申訴</button>
+        <button class="btn btnGreen" data-action="uploadImprove" data-id="${c.id}">上傳改善</button>
+        <button class="btn btnPrimary" data-action="verifyPass" data-id="${c.id}">複驗通過</button>
+        <button class="btn btnDanger" data-action="rejectCase" data-id="${c.id}">退件重改</button>
+        <button class="btn btnPurple" data-action="moveTracking" data-id="${c.id}">納入前期追蹤</button>
+      </div>
+    </div>
+  </div>`;
+}
+function activeStep(status, step){
+  if(step==='開單成立') return true;
+  if(step==='改善中') return ['改善中','待複驗','退件重改','前期追蹤','已結案'].includes(status);
+  if(step==='待複驗') return ['待複驗','已結案'].includes(status);
+  if(step==='退件重改') return status==='退件重改';
+  if(step==='前期追蹤') return status==='前期追蹤';
+  if(step==='結案') return status==='已結案';
+  return false;
+}
+function renderAudit(){
+  let rows = state.cases;
+  if(state.filterStatus && state.filterStatus!=='全部') rows=rows.filter(x=>x.status===state.filterStatus);
+  return `<div class="pageTitle"><div><h1>稽核清單</h1><div class="hint">扣分項由稽核人員於開單週建立；開單即成立。改善單位可申訴，案件回到稽核人員處理。</div></div><button class="btn btnPrimary" data-module="newDeduct">＋ 新增扣分單</button></div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="tabs">${['全部','待改善','改善中','待複驗','申訴中','退件重改','逾期未改','前期追蹤','已結案'].map(s=>`<div class="tab ${state.filterStatus===s?'active':''}" data-action="filterStatus" data-status="${s}">${s}</div>`).join('')}</div>
+      <div class="filters">
+        <select id="filterDept"><option>全部部門</option>${departments.map(d=>`<option>${d}</option>`).join('')}</select>
+        <button class="btn btnPrimary" data-action="applyFilter">查詢</button>
+        <button class="btn btnLight" data-action="filterStatus" data-status="全部">重設</button>
+        <button class="btn btnLight" data-action="exportCsv">匯出CSV</button>
+      </div>
+      ${renderCaseTable(rows)}
+    </div>
+    <div>${renderDetailPanel(currentCase())}</div>
+  </div>`;
+}
+function renderNewDeduct(){
+  const logic = state.role==='稽核人員' && inOpenWeek();
+  return `<div class="pageTitle"><div><h1>新增扣分單</h1><div class="hint">驗證規則：只有「稽核人員」可開扣分項，且時間必須在開單週：第1週星期一 08:00 至星期五 17:00。開單後立即成立，不需管理部裁定。</div></div></div>
+  <div class="${logic?'okBox':'badBox'}">目前角色：${state.role}｜目前時間：${fmt(now())}<br>扣分單開單條件：${logic?'符合，可以開單':'不符合，送出會被系統擋下'}</div>
+  <br>
+  <div class="panel">
+    <div class="panelHeader"><div class="panelTitle">扣分單表單</div><div><button class="btn btnLight" data-action="setTimeOpen">切到開單週時間</button> <button class="btn btnLight" data-action="setRoleAuditor">切成稽核人員</button></div></div>
+    <div class="panelBody">
+      <div class="formGrid">
+        <div class="field"><label>稽核區域</label><input id="deductArea" value="二廠1F-組裝區"></div>
+        <div class="field"><label>責任部門</label><select id="deductDept">${departments.map(d=>`<option>${d}</option>`).join('')}</select></div>
+        <div class="field"><label>5S項目</label><select id="deductCategory">${categories.map(c=>`<option>${c.name}（${c.score}分）</option>`).join('')}</select></div>
+        <div class="field"><label>缺失性質</label><select id="deductNature"><option>一般缺失</option><option>隨手問題</option><option>重大安全風險</option><option>季內累犯</option></select></div>
+        <div class="field full"><label>缺失描述</label><textarea id="deductDesc">請輸入缺失描述，例如：滅火器前方堆放物品，影響緊急取用。</textarea></div>
+        <div class="field full"><label>照片佐證</label><input id="deductPhoto" type="file" multiple></div>
+      </div>
+      <div class="divider"></div>
+      <button class="btn btnPrimary" data-action="submitDeduct">送出扣分單</button>
+      <button class="btn btnLight" data-module="audit">返回稽核清單</button>
+    </div>
+  </div>`;
+}
+function renderBonus(){
+  return `<div class="pageTitle"><div><h1>加分提報</h1><div class="hint">全員可開立加分項，不分時段；但需先審單確認開單成立，才計入當週積分。</div></div><button class="btn btnGreen" data-action="openBonusForm">＋ 新增加分單</button></div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="panelHeader"><div class="panelTitle">加分案件清單</div><button class="btn btnLight" data-action="exportCsv">匯出CSV</button></div>
+      <div class="tableWrap"><table><thead><tr><th>編號</th><th>提報時間</th><th>提報單位</th><th>責任單位</th><th>主旨</th><th>狀態</th><th>加分</th><th>操作</th></tr></thead>
+      <tbody>${state.bonus.map(b=>`<tr><td>${b.id}</td><td>${fmtShort(b.createdAt)}</td><td>${b.proposer}</td><td>${b.targetDept}</td><td>${b.title}</td><td>${tagStatus(b.status)}</td><td style="color:var(--green);font-weight:900">+${b.score}</td><td><button class="btn btnLight btnTiny" data-action="selectBonus" data-id="${b.id}">檢視</button></td></tr>`).join('')}</tbody></table></div>
+    </div>
+    <div>${renderBonusDetail(currentBonus())}</div>
+  </div>`;
+}
+function renderBonusDetail(b){
+  if(!b) return '';
+  return `<div class="panel"><div class="panelHeader"><div><div class="panelTitle">加分單明細</div><div style="font-size:22px;color:var(--green);font-weight:900;margin-top:8px">${b.id} ${tagStatus(b.status)}</div></div></div>
+  <div class="panelBody"><div class="detailGrid">
+    <div class="label">提報時間：</div><div>${fmt(b.createdAt)}</div>
+    <div class="label">提報單位：</div><div>${b.proposer}</div>
+    <div class="label">責任單位：</div><div>${b.targetDept}</div>
+    <div class="label">區域：</div><div>${b.area}</div>
+    <div class="label">主旨：</div><div>${b.title}</div>
+    <div class="label">描述：</div><div>${b.desc}</div>
+    <div class="label">計分週：</div><div>${b.week}</div>
+  </div><div class="divider"></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn btnGreen" data-action="approveBonus" data-id="${b.id}">審單成立</button>
+    <button class="btn btnDanger" data-action="rejectBonus" data-id="${b.id}">駁回</button>
+    <button class="btn btnLight" data-action="openBonusForm">再開一張</button>
+  </div></div></div>`;
+}
+function renderImprovement(){
+  const rows=state.cases.filter(c=>['待改善','改善中','退件重改','逾期未改','待複驗'].includes(c.status));
+  return `<div class="pageTitle"><div><h1>改善管理</h1><div class="hint">改善週為第1週星期一 08:00 至第2週星期五 17:00。退件後需於一週內完成，未完成列當週逾期。</div></div><button class="btn btnLight" data-action="runDeadlineCheck">期限檢核</button></div>
+  <div class="panel"><div class="panelHeader"><div class="panelTitle">待改善 / 待複驗案件</div></div>${renderCaseTable(rows)}</div>
+  <div class="grid2"><div>${renderDetailPanel(currentCase())}</div>
+  <div class="panel"><div class="panelHeader"><div class="panelTitle">改善邏輯</div></div><div class="panelBody">
+    <div class="flow"><div class="flowNode">待改善</div><span class="arrow">→</span><div class="flowNode">上傳改善</div><span class="arrow">→</span><div class="flowNode">待複驗</div><span class="arrow">→</span><div class="flowNode">通過結案</div></div>
+    <div class="divider"></div>
+    <div class="flow"><div class="flowNode">待複驗</div><span class="arrow">→</span><div class="flowNode">退件重改</div><span class="arrow">→</span><div class="flowNode">一週內完成</div><span class="arrow">→</span><div class="flowNode">未完成列逾期</div></div>
+  </div></div></div>`;
+}
+function renderTracking(){
+  const rows=state.cases.filter(c=>c.tracking || c.status==='前期追蹤');
+  return `<div class="pageTitle"><div><h1>前期追蹤</h1><div class="hint">週期為 3 個月一季：1-3月、4-6月、7-9月、10-12月。追蹤期限以該季結束為截止。</div></div><button class="btn btnLight" data-action="runDeadlineCheck">季度期限檢核</button></div>
+  <div class="grid4">
+    ${['2025-Q1','2025-Q2','2025-Q3','2025-Q4'].map(q=>`<div class="miniCard" data-action="toastOnly" data-msg="${q}：${quarterRange(q)}"><b>${q}</b><div class="hint">${quarterRange(q)}</div><div class="big" style="color:${q===CYCLE.quarter?'var(--blue)':'var(--muted)'}">${q===CYCLE.quarter?'當季':'查看'}</div></div>`).join('')}
+  </div><br>
+  <div class="panel"><div class="panelHeader"><div class="panelTitle">追蹤清單</div><button class="btn btnPurple" data-action="openTrackingForm">新增追蹤事項</button></div>${renderCaseTable(rows)}</div>
+  <div class="grid2"><div>${renderDetailPanel(currentCase())}</div><div class="panel"><div class="panelHeader"><div class="panelTitle">追蹤操作</div></div><div class="panelBody">
+    <button class="btn btnGreen" data-action="completeTracking" data-id="${currentCase()?.id||''}">追蹤完成</button>
+    <button class="btn btnWarn" data-action="runDeadlineCheck">檢查逾期</button>
+    <button class="btn btnLight" data-action="showQuarterRule">查看季度規則</button>
+  </div></div></div>`;
+}
+function renderReports(){
+  const deptMap={};
+  departments.forEach(d=>deptMap[d]={dept:d,deduct:0,bonus:0,total:0,cases:0,overdue:0});
+  state.cases.forEach(c=>{ if(!deptMap[c.dept]) return; if(c.status!=='作廢'){deptMap[c.dept].deduct+=c.score;deptMap[c.dept].cases++; if(c.status==='逾期未改') deptMap[c.dept].overdue++;}});
+  state.bonus.forEach(b=>{ if(b.status==='已成立' && deptMap[b.proposer]) deptMap[b.proposer].bonus+=b.score;});
+  Object.values(deptMap).forEach(d=>d.total=d.deduct+d.bonus);
+  const ranking=Object.values(deptMap).sort((a,b)=>b.total-a.total);
+  return `<div class="pageTitle"><div><h1>統計報表</h1><div class="hint">此頁以少量假資料即時計算：扣分項、加分項、逾期件數、改善率與排名。</div></div><button class="btn btnLight" data-action="exportCsv">匯出CSV</button></div>
+  <div class="grid2">
+    <div class="panel"><div class="panelHeader"><div class="panelTitle">部門排名</div></div><div class="tableWrap"><table><thead><tr><th>名次</th><th>部門</th><th>扣分</th><th>加分</th><th>總分</th><th>案件數</th><th>逾期</th></tr></thead>
+    <tbody>${ranking.map((r,i)=>`<tr><td>${i+1}</td><td>${r.dept}</td><td style="color:var(--red);font-weight:900">${r.deduct}</td><td style="color:var(--green);font-weight:900">+${r.bonus}</td><td style="font-weight:900">${r.total}</td><td>${r.cases}</td><td>${r.overdue}</td></tr>`).join('')}</tbody></table></div></div>
+    <div class="panel"><div class="panelHeader"><div class="panelTitle">缺失類型統計</div></div><div class="panelBody">
+      ${categories.map(cat=>{ const n=state.cases.filter(c=>c.category===cat.name && c.status!=='作廢').length; const pct=Math.min(100,n*18); return `<div style="margin-bottom:13px"><b>${cat.name}</b> ${n} 件<div class="bar"><span style="width:${pct}%"></span></div></div>`}).join('')}
+    </div></div>
+  </div>`;
+}
+function renderMasters(){
+  return `<div class="pageTitle"><div><h1>主檔資料</h1><div class="hint">主檔按鈕可操作示意；此版為前端互動原型，資料會存於瀏覽器 localStorage。</div></div></div>
+  <div class="grid2">
+    <div class="panel"><div class="panelHeader"><div class="panelTitle">5S扣分標準</div><button class="btn btnLight" data-action="toastOnly" data-msg="主檔新增功能示意">新增項目</button></div><div class="tableWrap"><table><thead><tr><th>項目</th><th>扣分</th><th>操作</th></tr></thead><tbody>${categories.map(c=>`<tr><td>${tagCat(c.name)}</td><td>${c.score}</td><td><button class="btn btnLight btnTiny" data-action="toastOnly" data-msg="已點擊編輯 ${c.name}">編輯</button></td></tr>`).join('')}</tbody></table></div></div>
+    <div class="panel"><div class="panelHeader"><div class="panelTitle">部門主檔</div><button class="btn btnLight" data-action="toastOnly" data-msg="部門新增功能示意">新增部門</button></div><div class="tableWrap"><table><thead><tr><th>部門</th><th>狀態</th><th>操作</th></tr></thead><tbody>${departments.map(d=>`<tr><td>${d}</td><td>${tagStatus('已成立')}</td><td><button class="btn btnLight btnTiny" data-action="toastOnly" data-msg="已點擊編輯 ${d}">編輯</button></td></tr>`).join('')}</tbody></table></div></div>
+  </div>
+  <div class="panel"><div class="panelHeader"><div class="panelTitle">週期主檔</div></div><div class="panelBody">
+    <div class="detailGrid">
+      <div class="label">開單週：</div><div>${fmt(CYCLE.openStart)} ~ ${fmt(CYCLE.openEnd)}</div>
+      <div class="label">改善週：</div><div>${fmt(CYCLE.improveStart)} ~ ${fmt(CYCLE.improveEnd)}</div>
+      <div class="label">前期追蹤：</div><div>1-3、4-6、7-9、10-12，每三個月一季</div>
+    </div>
+  </div></div>`;
+}
+function renderLogic(){
+  return `<div class="pageTitle"><div><h1>邏輯驗證中心</h1><div class="hint">用此頁驗證你提出的 8 項規則是否被畫面與流程支援。</div></div><button class="btn btnLight" data-action="clearLogs">清除紀錄</button></div>
+  <div class="grid2">
+    <div class="panel"><div class="panelHeader"><div class="panelTitle">規則驗證按鈕</div></div><div class="panelBody">
+      <div class="grid3">
+        <button class="btn btnPrimary" data-action="testDeductValid">測試：稽核人員於開單週開扣分單</button>
+        <button class="btn btnWarn" data-action="testDeductInvalidTime">測試：非開單週不能開扣分單</button>
+        <button class="btn btnWarn" data-action="testDeductInvalidRole">測試：一般員工不能開扣分單</button>
+        <button class="btn btnGreen" data-action="testBonusAnytime">測試：全員任意時段開加分單</button>
+        <button class="btn btnPurple" data-action="testAppeal">測試：改善單位申訴回稽核人員</button>
+        <button class="btn btnDanger" data-action="testRejectOverdue">測試：退件一週未完成列逾期</button>
+      </div>
+      <div class="divider"></div>
+      <div class="warnBox">
+        待確認事項會保留在文件與原型中：例如「現場紀錄方式欄位要如何定義」、「加分單由誰審單」、「前期追蹤逾期扣分是固定扣分或依規則金額換算」等。
+      </div>
+    </div></div>
+    <div class="panel"><div class="panelHeader"><div class="panelTitle">操作紀錄 / 驗證結果</div></div><div class="panelBody"><div class="logBox">${state.logs.map(x=>`<div>● ${x}</div>`).join('')}</div></div></div>
+  </div>`;
+}
+function renderSystem(){
+  return `<div class="pageTitle"><div><h1>系統設定</h1><div class="hint">可切換角色與時間，驗證每個角色權限與期限規則。</div></div></div>
+  <div class="grid2">
+    <div class="panel"><div class="panelHeader"><div class="panelTitle">模擬設定</div></div><div class="panelBody">
+      <div class="formGrid">
+        <div class="field"><label>目前角色</label><select id="sysRole">${['稽核人員','一般員工','改善單位','管理部','主管'].map(r=>`<option ${state.role===r?'selected':''}>${r}</option>`).join('')}</select></div>
+        <div class="field"><label>目前時間</label><input id="sysTime" type="datetime-local" value="${state.simTime}"></div>
+      </div>
+      <div class="divider"></div>
+      <button class="btn btnPrimary" data-action="saveSystem">儲存設定</button>
+      <button class="btn btnLight" data-action="setTimeOpen">開單週時間</button>
+      <button class="btn btnLight" data-action="setTimeImproveEnd">改善截止後</button>
+      <button class="btn btnLight" data-action="resetDemo">重置Demo</button>
+    </div></div>
+    <div class="panel"><div class="panelHeader"><div class="panelTitle">權限矩陣</div></div><div class="tableWrap"><table><thead><tr><th>功能</th><th>稽核人員</th><th>全員</th><th>改善單位</th><th>管理部</th></tr></thead><tbody>
+      <tr><td>扣分開單</td><td>可</td><td>不可</td><td>不可</td><td>視設定</td></tr>
+      <tr><td>加分提報</td><td>可</td><td>可</td><td>可</td><td>可</td></tr>
+      <tr><td>申訴</td><td>查看</td><td>不可</td><td>可</td><td>查看</td></tr>
+      <tr><td>申訴處理</td><td>可</td><td>不可</td><td>不可</td><td>協調</td></tr>
+      <tr><td>審單成立</td><td>可</td><td>不可</td><td>不可</td><td>可</td></tr>
+    </tbody></table></div></div>
+  </div>`;
+}
+
+function openModal(title, body, footer=''){
+  document.getElementById('modalTitle').innerHTML=title;
+  document.getElementById('modalBody').innerHTML=body;
+  document.getElementById('modalFooter').innerHTML=footer || `<button class="btn btnLight" data-action="closeModal">關閉</button>`;
+  document.getElementById('modalBackdrop').classList.add('show');
+}
+function closeModal(){ document.getElementById('modalBackdrop').classList.remove('show'); }
+
+function openCaseModal(id){
+  const c=state.cases.find(x=>x.id===id); if(!c) return;
+  openModal(`缺失單完整檢視｜${c.id}`, `
+    ${renderDetailPanel(c)}
+    <div class="panel"><div class="panelHeader"><div class="panelTitle">系統判斷</div></div><div class="panelBody">
+      <div class="detailGrid">
+        <div class="label">開單成立：</div><div>是。稽核人員具獨立判斷能力，開單即成立。</div>
+        <div class="label">可申訴：</div><div>${['待改善','改善中','申訴中'].includes(c.status)?'是':'依目前狀態不建議'}</div>
+        <div class="label">期限判斷：</div><div>${dt(now())>dt(c.rejectDue||c.due)?'已超過期限':'期限內'}</div>
+        <div class="label">季度追蹤：</div><div>${c.tracking?'已納入 '+(c.trackingQuarter||CYCLE.quarter):'未納入'}</div>
+      </div>
+    </div></div>
+  `);
+}
+
+function submitDeduct(){
+  if(state.role!=='稽核人員'){ toast('權限不足：扣分項僅稽核人員可開單'); log('扣分單送出失敗：目前角色不是稽核人員。'); render(); return; }
+  if(!inOpenWeek()){ toast('時間不符：目前不在開單週'); log('扣分單送出失敗：不在第1週週一08:00～週五17:00。'); render(); return; }
+  const area=document.getElementById('deductArea').value.trim();
+  const dept=document.getElementById('deductDept').value;
+  const category=document.getElementById('deductCategory').value.split('（')[0];
+  const desc=document.getElementById('deductDesc').value.trim();
+  if(!area||!dept||!category||!desc){ toast('請填寫必填欄位'); return; }
+  const c={id:nextId('CL',state.cases),type:'扣分',createdAt:now(),auditor:'王小明、李小華',area,dept,category,score:catObj(category).score,status:'待改善',due:CYCLE.improveEnd,desc,appeal:'無',tracking:false,rejectDue:'',improveText:'',closeAt:''};
+  state.cases.unshift(c); state.selectedCaseId=c.id;
+  log(`新增扣分單 ${c.id}：開單即成立，責任部門 ${dept}，${category} ${c.score} 分。`);
+  save(); toast('扣分單已成立'); setModule('audit');
+}
+function appealCase(id){
+  const c=state.cases.find(x=>x.id===id); if(!c) return;
+  if(!['改善單位','管理部','主管','稽核人員'].includes(state.role)){ toast('目前角色不可申訴'); return; }
+  if(['已結案','作廢'].includes(c.status)){ toast('已結案或作廢不可申訴'); return; }
+  c.status='申訴中'; c.appeal='改善單位提出申訴：請稽核人員重新確認缺失判定或責任歸屬。';
+  log(`${c.id} 改善單位提出申訴，案件回到稽核人員處理。`);
+  save(); toast('已送出申訴，回到稽核人員'); render();
+}
+function uploadImprove(id){
+  const c=state.cases.find(x=>x.id===id); if(!c) return;
+  if(['已結案','作廢','申訴中'].includes(c.status)){ toast('此狀態不可上傳改善'); return; }
+  c.status='待複驗'; c.improveText='已上傳改善說明與改善照片，等待稽核人員複驗。';
+  log(`${c.id} 已上傳改善資料，狀態改為待複驗。`);
+  save(); toast('改善資料已上傳'); render();
+}
+function verifyPass(id){
+  const c=state.cases.find(x=>x.id===id); if(!c) return;
+  if(state.role!=='稽核人員' && state.role!=='管理部'){ toast('需稽核人員或管理部才能複驗'); return; }
+  if(c.status!=='待複驗' && c.status!=='前期追蹤'){ toast('目前狀態不是待複驗/前期追蹤'); return; }
+  c.status='已結案'; c.closeAt=now(); c.tracking=false;
+  log(`${c.id} 複驗通過並結案。`);
+  save(); toast('複驗通過，已結案'); render();
+}
+function rejectCase(id){
+  const c=state.cases.find(x=>x.id===id); if(!c) return;
+  if(state.role!=='稽核人員' && state.role!=='管理部'){ toast('需稽核人員或管理部才能退件'); return; }
+  if(c.status!=='待複驗'){ toast('只有待複驗案件可退件'); return; }
+  const d=dt(now()); d.setDate(d.getDate()+7); d.setHours(17,0,0,0);
+  c.status='退件重改'; c.rejectDue=d.toISOString().slice(0,16); c.improveText='退件原因：改善內容不符或佐證不足，需於一週內完成。';
+  log(`${c.id} 退件重改，期限 ${fmt(c.rejectDue)}，未完成列當週逾期。`);
+  save(); toast('已退件，期限一週'); render();
+}
+function moveTracking(id){
+  const c=state.cases.find(x=>x.id===id); if(!c) return;
+  if(c.status==='已結案'||c.status==='作廢'){ toast('已結案/作廢不可追蹤'); return; }
+  c.status='前期追蹤'; c.tracking=true; c.trackingQuarter=currentQuarter(); c.due=CYCLE.quarterEnd;
+  log(`${c.id} 已納入前期追蹤，週期 ${c.trackingQuarter}，期限 ${fmt(CYCLE.quarterEnd)}。`);
+  save(); toast('已納入前期追蹤'); render();
+}
+function completeTracking(id){
+  const c=state.cases.find(x=>x.id===id); if(!c || !c.tracking){ toast('請先選擇前期追蹤案件'); return; }
+  c.status='已結案'; c.tracking=false; c.closeAt=now();
+  log(`${c.id} 前期追蹤完成並結案。`);
+  save(); toast('追蹤完成'); render();
+}
+function runDeadlineCheck(){
+  let changed=0;
+  state.cases.forEach(c=>{
+    if(['已結案','作廢','申訴中'].includes(c.status)) return;
+    const due=c.rejectDue||c.due;
+    if(due && dt(now())>dt(due)){
+      if(c.status==='退件重改'){ c.status='逾期未改'; changed++; log(`${c.id} 退件後一週未完成，列當週逾期。`); }
+      else if(!c.tracking && c.status!=='逾期未改'){ c.status='逾期未改'; changed++; log(`${c.id} 超過改善期限，列為逾期未改。`); }
+      else if(c.tracking && c.status!=='逾期未改'){ c.status='逾期未改'; changed++; log(`${c.id} 超過季度追蹤期限，列為逾期未完成。`); }
+    }
+  });
+  save(); toast(changed?`期限檢核完成：${changed} 件更新`:'期限檢核完成：無需更新'); render();
+}
+function approveBonus(id){
+  const b=state.bonus.find(x=>x.id===id); if(!b) return;
+  if(state.role!=='稽核人員' && state.role!=='管理部'){ toast('需稽核人員或管理部審單'); return; }
+  b.status='已成立'; b.score=5; b.week=CYCLE.id;
+  log(`${b.id} 加分單審單成立，計入當週 ${b.week}，提報單位 +5 分。`);
+  save(); toast('加分單已成立並計分'); render();
+}
+function rejectBonus(id){
+  const b=state.bonus.find(x=>x.id===id); if(!b) return;
+  if(state.role!=='稽核人員' && state.role!=='管理部'){ toast('需稽核人員或管理部審單'); return; }
+  b.status='駁回'; b.score=0;
+  log(`${b.id} 加分單駁回，不計分。`);
+  save(); toast('加分單已駁回'); render();
+}
+function openBonusForm(){
+  openModal('新增加分單', `
+    <div class="okBox">加分項不限制時段，全員皆可提報；但需審單成立才會計入當週。</div><br>
+    <div class="formGrid">
+      <div class="field"><label>提報單位</label><select id="bonusProposer">${departments.map(d=>`<option>${d}</option>`).join('')}</select></div>
+      <div class="field"><label>責任單位</label><select id="bonusTarget">${departments.map(d=>`<option>${d}</option>`).join('')}</select></div>
+      <div class="field full"><label>區域</label><input id="bonusArea" value="二廠1F-公共區"></div>
+      <div class="field full"><label>主旨</label><input id="bonusTitle" value="主動提報5S改善建議"></div>
+      <div class="field full"><label>說明</label><textarea id="bonusDesc">提報具改善價值的5S問題或改善建議。</textarea></div>
+    </div>
+  `, `<button class="btn btnGreen" data-action="submitBonus">送出加分單</button><button class="btn btnLight" data-action="closeModal">取消</button>`);
+}
+function submitBonus(){
+  const b={id:nextId('AD',state.bonus),createdAt:now(),proposer:document.getElementById('bonusProposer').value,targetDept:document.getElementById('bonusTarget').value,area:document.getElementById('bonusArea').value,title:document.getElementById('bonusTitle').value,desc:document.getElementById('bonusDesc').value,status:'待審單',score:0,week:CYCLE.id};
+  state.bonus.unshift(b); state.selectedBonusId=b.id;
+  log(`新增加分單 ${b.id}：全員提報成立為待審單，尚未計分。`);
+  save(); closeModal(); toast('加分單已送出，待審單'); setModule('bonus');
+}
+function openTrackingForm(){
+  openModal('新增前期追蹤事項', `
+    <div class="formGrid">
+      <div class="field"><label>追蹤部門</label><select id="trackDept">${departments.map(d=>`<option>${d}</option>`).join('')}</select></div>
+      <div class="field"><label>追蹤季度</label><select id="trackQuarter"><option>2025-Q1</option><option selected>2025-Q2</option><option>2025-Q3</option><option>2025-Q4</option></select></div>
+      <div class="field full"><label>追蹤事項</label><textarea id="trackDesc">請輸入需跨週期追蹤之改善事項。</textarea></div>
+    </div>
+  `, `<button class="btn btnPurple" data-action="submitTracking">建立追蹤</button><button class="btn btnLight" data-action="closeModal">取消</button>`);
+}
+function submitTracking(){
+  const dept=document.getElementById('trackDept').value, q=document.getElementById('trackQuarter').value;
+  const c={id:nextId('CL',state.cases),type:'扣分',createdAt:now(),auditor:'系統建立',area:'前期追蹤事項',dept,category:'清潔',score:0,status:'前期追蹤',due:CYCLE.quarterEnd,desc:document.getElementById('trackDesc').value,appeal:'無',tracking:true,trackingQuarter:q,rejectDue:'',improveText:'',closeAt:''};
+  state.cases.unshift(c); state.selectedCaseId=c.id;
+  log(`新增前期追蹤 ${c.id}：${q} ${quarterRange(q)}。`);
+  save(); closeModal(); toast('前期追蹤已建立'); setModule('tracking');
+}
+
+function handleAction(action, el){
+  const id=el.dataset.id, msg=el.dataset.msg;
+  if(action==='closeModal') closeModal();
+  if(action==='showCycle') openModal('稽核週期設定', `<div class="detailGrid"><div class="label">開單週：</div><div>${fmt(CYCLE.openStart)} ~ ${fmt(CYCLE.openEnd)}</div><div class="label">改善週：</div><div>${fmt(CYCLE.improveStart)} ~ ${fmt(CYCLE.improveEnd)}</div><div class="label">季度追蹤：</div><div>${CYCLE.quarter}，${quarterRange(CYCLE.quarter)}</div></div>`);
+  if(action==='selectCase'){ state.selectedCaseId=id; save(); toast(`已選擇 ${id}`); render(); }
+  if(action==='selectBonus'){ state.selectedBonusId=id; save(); toast(`已選擇 ${id}`); render(); }
+  if(action==='openCaseModal') openCaseModal(id);
+  if(action==='submitDeduct') submitDeduct();
+  if(action==='appealCase') appealCase(id);
+  if(action==='uploadImprove') uploadImprove(id);
+  if(action==='verifyPass') verifyPass(id);
+  if(action==='rejectCase') rejectCase(id);
+  if(action==='moveTracking') moveTracking(id);
+  if(action==='completeTracking') completeTracking(id);
+  if(action==='runDeadlineCheck') runDeadlineCheck();
+  if(action==='filterStatus'){ state.filterStatus=el.dataset.status; save(); setModule('audit'); }
+  if(action==='applyFilter'){ toast('篩選已套用（示意）'); log('使用者執行稽核清單查詢。'); }
+  if(action==='exportCsv'){ toast('已匯出CSV（示意）'); log('使用者點擊匯出CSV。'); }
+  if(action==='openBonusForm') openBonusForm();
+  if(action==='submitBonus') submitBonus();
+  if(action==='approveBonus') approveBonus(id);
+  if(action==='rejectBonus') rejectBonus(id);
+  if(action==='openTrackingForm') openTrackingForm();
+  if(action==='submitTracking') submitTracking();
+  if(action==='showQuarterRule') openModal('前期追蹤季度規則', `<div class="detailGrid"><div class="label">Q1：</div><div>1/1 ~ 3/31</div><div class="label">Q2：</div><div>4/1 ~ 6/30</div><div class="label">Q3：</div><div>7/1 ~ 9/30</div><div class="label">Q4：</div><div>10/1 ~ 12/31</div></div>`);
+  if(action==='toastOnly'){ toast(msg || '功能已點擊'); log(msg || '使用者點擊示意功能。'); render(); }
+  if(action==='setTimeOpen'){ state.simTime='2025-05-27T10:00'; save(); toast('已切換到開單週時間'); render(); }
+  if(action==='setTimeImproveEnd'){ state.simTime='2025-06-14T10:00'; save(); toast('已切換到改善截止後'); render(); }
+  if(action==='setRoleAuditor'){ state.role='稽核人員'; save(); toast('已切換為稽核人員'); render(); }
+  if(action==='resetDemo'){ if(confirm('確定要重置所有Demo資料？')){ state=sampleState(); save(); toast('Demo已重置'); render(); } }
+  if(action==='clearLogs'){ state.logs=[]; save(); toast('紀錄已清除'); render(); }
+  if(action==='saveSystem'){ state.role=document.getElementById('sysRole').value; state.simTime=document.getElementById('sysTime').value; log('系統設定已更新。'); save(); toast('設定已儲存'); render(); }
+  if(action==='testDeductValid'){ state.role='稽核人員'; state.simTime='2025-05-27T10:00'; log('測試通過：稽核人員於開單週可建立扣分單。'); save(); render(); toast('測試通過'); }
+  if(action==='testDeductInvalidTime'){ state.role='稽核人員'; state.simTime='2025-06-02T10:00'; log('測試通過：非開單週建立扣分單會被擋下。'); save(); render(); toast('已切換至非開單週，可到新增扣分單驗證'); }
+  if(action==='testDeductInvalidRole'){ state.role='一般員工'; state.simTime='2025-05-27T10:00'; log('測試通過：一般員工不可建立扣分單。'); save(); render(); toast('已切換為一般員工，可到新增扣分單驗證'); }
+  if(action==='testBonusAnytime'){ state.role='一般員工'; state.simTime='2025-07-15T22:00'; log('測試通過：加分單不分時段，全員可提報，但待審單不計分。'); save(); render(); toast('已切換成任意時段，可開加分單'); }
+  if(action==='testAppeal'){ const c=state.cases.find(x=>x.status==='待改善')||state.cases[0]; appealCase(c.id); log('測試通過：申訴後案件回到稽核人員處理。'); }
+  if(action==='testRejectOverdue'){ const c=state.cases.find(x=>x.status==='退件重改')||state.cases[0]; c.status='退件重改'; c.rejectDue='2025-06-13T17:00'; state.simTime='2025-06-14T10:00'; save(); runDeadlineCheck(); log('測試通過：退件一週未完成列當週逾期。'); }
+}
+
+document.addEventListener('click', e=>{
+  const mod=e.target.closest('[data-module]');
+  if(mod){ setModule(mod.dataset.module); return; }
+  const act=e.target.closest('[data-action]');
+  if(act){ handleAction(act.dataset.action, act); return; }
+});
+document.getElementById('roleSelect').addEventListener('change', e=>{state.role=e.target.value; log(`切換角色為 ${state.role}`); save(); render();});
+document.getElementById('simTime').addEventListener('change', e=>{state.simTime=e.target.value; log(`切換模擬時間為 ${fmt(state.simTime)}`); save(); render();});
+render();
+</script>
 </body>
 </html>
